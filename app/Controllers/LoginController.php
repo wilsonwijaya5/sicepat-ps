@@ -9,7 +9,7 @@ class LoginController extends BaseController
 {
     public function index()
     {
-        return view('Auth/login'); // Menunjukkan ke folder Auth
+        return view('Auth/login');
     }
 
     public function auth()
@@ -22,7 +22,6 @@ class LoginController extends BaseController
         $data = $model->where('username', $username)->first();
         
         if ($data) {
-            // Menggunakan SHA2 untuk memverifikasi password
             $hash = hash('sha256', $password);
             if ($data['password'] === $hash) {
                 $ses_data = [

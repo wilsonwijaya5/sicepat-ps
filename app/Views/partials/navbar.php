@@ -4,7 +4,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
             </li>
@@ -20,6 +20,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="/bukti">Bukti</a>
             </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <?php if(session()->get('logged_in')): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            <?php else: ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            <?php endif; ?>
         </ul>
     </div>
 </nav>
