@@ -45,7 +45,14 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/kurir/delete/(:num)', 'KurirController::delete/$1');
 
     $routes->get('/pengantaran', 'PengantaranController::index');
+	
     $routes->get('/bukti', 'BuktiController::index');
+	$routes->get('/bukti/create', 'BuktiController::create');
+	$routes->post('/bukti/store', 'BuktiController::store');
+	$routes->get('/bukti/edit/(:num)', 'BuktiController::edit/$1');
+	$routes->post('/bukti/update/(:num)', 'BuktiController::update/$1');
+	$routes->get('/bukti/delete/(:num)', 'BuktiController::delete/$1');
+
 });
 
 /**
