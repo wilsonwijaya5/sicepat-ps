@@ -5,11 +5,11 @@ namespace App\Controllers;
 use App\Models\AdminModel;
 use CodeIgniter\Controller;
 
-class LoginController extends BaseController
+class LoginController extends Controller
 {
     public function index()
     {
-        return view('Auth/login');
+        return view('auth/login');
     }
 
     public function auth()
@@ -18,25 +18,26 @@ class LoginController extends BaseController
         $model = new AdminModel();
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');
-        
         $data = $model->where('username', $username)->first();
         
         if ($data) {
-            $hash = hash('sha256', $password);
-            if ($data['password'] === $hash) {
+            $hashed_input_password = hash('sha256', $password);
+            $stored_hashed_password = $data['password'];
+            
+            if ($hashed_input_password === $stored_hashed_password) {
                 $ses_data = [
                     'id' => $data['id'],
                     'username' => $data['username'],
-                    'logged_in' => TRUE
+                    'isLoggedIn' => true
                 ];
                 $session->set($ses_data);
-                return redirect()->to('/');
+                return redirect()->to('/home');
             } else {
                 $session->setFlashdata('msg', 'Wrong Password');
                 return redirect()->to('/login');
             }
         } else {
-            $session->setFlashdata('msg', 'Username not Found');
+            $session->setFlashdata('msg', 'Username not found');
             return redirect()->to('/login');
         }
     }

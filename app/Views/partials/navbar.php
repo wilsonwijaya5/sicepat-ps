@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Dashboard</a>
+    <a class="navbar-brand" href="/">Sicepat Payung Sekaki</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/home">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin">Admin</a>
@@ -22,7 +22,7 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <?php if(session()->get('logged_in')): ?>
+            <?php if(session()->get('isLoggedIn')): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
