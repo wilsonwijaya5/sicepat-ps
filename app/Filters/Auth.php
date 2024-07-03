@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Filters;
+<?php namespace App\Filters;
 
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -10,7 +8,9 @@ class Auth implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!session()->get('logged_in')) {
+        // If the user is not logged in
+        if (!session()->get('isLoggedIn')) {
+            // Redirect to login page
             return redirect()->to('/login');
         }
     }

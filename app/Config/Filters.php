@@ -71,6 +71,13 @@ class Filters extends BaseConfig
      * @var array<string, array<string, list<string>>>
      */
     public $filters = [
-        'auth' => ['before' => ['/', 'home/*']],
+        'auth' => ['before' => [
+            '/', 
+            'home/*',
+            'admin/*',
+            'kurir/*',
+            'pengantaran/*',
+            'bukti/*'
+        ]],
     ];
 }
