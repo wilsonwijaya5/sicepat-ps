@@ -22,6 +22,13 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
+$routes->get('/admin', 'AdminController::index');
+$routes->get('/admin/create', 'AdminController::create');
+$routes->post('/admin/store', 'AdminController::store');
+$routes->get('/admin/edit/(:num)', 'AdminController::edit/$1');
+$routes->post('/admin/update/(:num)', 'AdminController::update/$1');
+$routes->get('/admin/delete/(:num)', 'AdminController::delete/$1');
+
 $routes->get('/login', 'LoginController::index');
 $routes->post('/login/auth', 'LoginController::auth');
 $routes->get('/logout', 'LoginController::logout');
