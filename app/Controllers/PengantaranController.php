@@ -3,14 +3,23 @@
 namespace App\Controllers;
 
 use App\Models\PengantaranModel;
+use App\Models\DetailPengantaranModel;
 use CodeIgniter\Controller;
 
 class PengantaranController extends Controller
 {
+    protected $pengantaranModel;
+    protected $detailPengantaranModel;
+
+    public function __construct()
+    {
+        $this->pengantaranModel = new PengantaranModel();
+        $this->detailPengantaranModel = new DetailPengantaranModel();
+    }
+
     public function index()
     {
-        $model = new PengantaranModel();
-        $data['pengantaran'] = $model->findAll();
+        $data['pengantaran'] = $this->pengantaranModel->findAll();
         return view('pengantaran/index', $data);
     }
 
@@ -18,88 +27,96 @@ class PengantaranController extends Controller
     {
         return view('pengantaran/create');
     }
-
     public function store()
     {
-        $model = new PengantaranModel();
-
-        if ($this->request->getMethod() === 'post' && $this->validate([
-            'region' => 'required',
-            'nama_kurir' => 'required',
-            'jumlah_paket' => 'required|integer',
-            'nomor_resi' => 'required',
-            'nama_penerima' => 'required',
-            'nohp' => 'required',
-            'alamat_penerima' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
-            'tanggal_pengantaran' => 'required|valid_date',
-        ])) {
-            $model->save([
-                'region' => $this->request->getPost('region'),
-                'nama_kurir' => $this->request->getPost('nama_kurir'),
-                'jumlah_paket' => $this->request->getPost('jumlah_paket'),
-                'nomor_resi' => $this->request->getPost('nomor_resi'),
-                'nama_penerima' => $this->request->getPost('nama_penerima'),
-                'nohp' => $this->request->getPost('nohp'),
-                'alamat_penerima' => $this->request->getPost('alamat_penerima'),
-                'latitude' => $this->request->getPost('latitude'),
-                'longitude' => $this->request->getPost('longitude'),
-                'tanggal_pengantaran' => $this->request->getPost('tanggal_pengantaran'),
-            ]);
-
-            return redirect()->to('/pengantaran');
-        } else {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        $data = [
+            'region' => $this->request->getPost('region'),
+            'nama_kurir' => $this->request->getPost('nama_kurir'),
+            'jumlah_paket' => $this->request->getPost('jumlah_paket'),
+        ];
+    
+        $pengantaranId = $this->pengantaranModel->insert($data);
+    
+        $namaPenerima = $this->request->getPost('nama_penerima');
+        $nohp = $this->request->getPost('nohp');
+        $alamatPenerima = $this->request->getPost('alamat_penerima');
+        $latitude = $this->request->getPost('latitude');
+        $longitude = $this->request->getPost('longitude');
+        $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran');
+    
+        $detailData = [];
+        for ($i = 0; $i < count($namaPenerima); $i++) {
+            $detailData[] = [
+                'pengantaran_id' => $pengantaranId,
+                'nama_penerima' => $namaPenerima[$i],
+                'nohp' => $nohp[$i],
+                'alamat_penerima' => $alamatPenerima[$i],
+                'latitude' => $latitude[$i],
+                'longitude' => $longitude[$i],
+                'tanggal_pengantaran' => $tanggalPengantaran[$i],
+            ];
         }
+    
+        $this->detailPengantaranModel->insertBatch($detailData);
+    
+        return redirect()->to('/pengantaran');
     }
+    
 
     public function edit($id)
     {
-        $model = new PengantaranModel();
-        $data['pengantaran'] = $model->find($id);
+        $pengantaran = $this->pengantaranModel->find($id);
+        $detail_pengantaran = $this->detailPengantaranModel->where('pengantaran_id', $id)->findAll();
+
+        $data = [
+            'pengantaran' => $pengantaran,
+            'detail_pengantaran' => $detail_pengantaran,
+        ];
+
         return view('pengantaran/edit', $data);
     }
 
     public function update($id)
     {
-        $model = new PengantaranModel();
+        $data = [
+            'region' => $this->request->getPost('region'),
+            'nama_kurir' => $this->request->getPost('nama_kurir'),
+            'tanggal_pengantaran' => $this->request->getPost('tanggal_pengantaran'), // Menambahkan tanggal_pengantaran
+        ];
 
-        if ($this->request->getMethod() === 'post' && $this->validate([
-            'region' => 'required',
-            'nama_kurir' => 'required',
-            'jumlah_paket' => 'required|integer',
-            'nomor_resi' => 'required',
-            'nama_penerima' => 'required',
-            'nohp' => 'required',
-            'alamat_penerima' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
-            'tanggal_pengantaran' => 'required|valid_date',
-        ])) {
-            $model->update($id, [
-                'region' => $this->request->getPost('region'),
-                'nama_kurir' => $this->request->getPost('nama_kurir'),
-                'jumlah_paket' => $this->request->getPost('jumlah_paket'),
-                'nomor_resi' => $this->request->getPost('nomor_resi'),
-                'nama_penerima' => $this->request->getPost('nama_penerima'),
-                'nohp' => $this->request->getPost('nohp'),
-                'alamat_penerima' => $this->request->getPost('alamat_penerima'),
-                'latitude' => $this->request->getPost('latitude'),
-                'longitude' => $this->request->getPost('longitude'),
-                'tanggal_pengantaran' => $this->request->getPost('tanggal_pengantaran'),
-            ]);
+        $this->pengantaranModel->update($id, $data);
 
-            return redirect()->to('/pengantaran');
-        } else {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        $detailData = [];
+        $namaPenerima = $this->request->getPost('nama_penerima');
+        $nohp = $this->request->getPost('nohp');
+        $alamatPenerima = $this->request->getPost('alamat_penerima');
+        $latitude = $this->request->getPost('latitude');
+        $longitude = $this->request->getPost('longitude');
+        $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran'); // Mengambil tanggal_pengantaran dari form
+
+        for ($i = 0; $i < count($namaPenerima); $i++) {
+            $detailData[] = [
+                'pengantaran_id' => $id,
+                'nama_penerima' => $namaPenerima[$i],
+                'nohp' => $nohp[$i],
+                'alamat_penerima' => $alamatPenerima[$i],
+                'latitude' => $latitude[$i],
+                'longitude' => $longitude[$i],
+                'tanggal_pengantaran' => $tanggalPengantaran, // Menyimpan tanggal_pengantaran di setiap detail pengantaran
+            ];
         }
+
+        $this->detailPengantaranModel->where('pengantaran_id', $id)->delete();
+        $this->detailPengantaranModel->insertBatch($detailData);
+
+        return redirect()->to('/pengantaran');
     }
 
     public function delete($id)
     {
-        $model = new PengantaranModel();
-        $model->delete($id);
+        $this->pengantaranModel->delete($id);
+        $this->detailPengantaranModel->where('pengantaran_id', $id)->delete();
         return redirect()->to('/pengantaran');
     }
 }
+

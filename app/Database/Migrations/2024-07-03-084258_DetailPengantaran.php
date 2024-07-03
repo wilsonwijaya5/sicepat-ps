@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Pengantaran extends Migration
+class DetailPengantaran extends Migration
 {
     public function up()
     {
@@ -15,49 +15,41 @@ class Pengantaran extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'region' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-            ],
-            'nama_kurir' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-            ],
-            'jumlah_paket' => [
+            'pengantaran_id' => [
                 'type' => 'INT',
-                'constraint' => 5,
-            ],
-            'nomor_resi' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
+                'unsigned' => true,
             ],
             'nama_penerima' => [
                 'type' => 'VARCHAR',
-                'constraint' => '255',
+                'constraint' => 255,
             ],
             'nohp' => [
                 'type' => 'VARCHAR',
-                'constraint' => '20',
+                'constraint' => 20,
             ],
             'alamat_penerima' => [
                 'type' => 'TEXT',
             ],
             'latitude' => [
-                'type' => 'DOUBLE',
+                'type' => 'FLOAT',
+                'null' => true,
             ],
             'longitude' => [
-                'type' => 'DOUBLE',
+                'type' => 'FLOAT',
+                'null' => true,
             ],
-            'tanggal_pengantaran' => [
+            'tanggal_pengantaran' => [  // Menambah kolom tanggal_pengantaran
                 'type' => 'DATE',
             ],
         ]);
-        $this->forge->addKey('id', true);
-        $this->forge->createTable('pengantaran');
+
+        $this->forge->addPrimaryKey('id');
+        $this->forge->addForeignKey('pengantaran_id', 'pengantaran', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('detail_pengantaran');
     }
 
     public function down()
     {
-        $this->forge->dropTable('pengantaran');
+        $this->forge->dropTable('detail_pengantaran');
     }
 }

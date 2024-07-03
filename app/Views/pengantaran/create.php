@@ -27,111 +27,98 @@
             <label for="jumlah_paket">Jumlah Paket</label>
             <input type="number" class="form-control" id="jumlah_paket" name="jumlah_paket" required>
         </div>
-        <div class="form-group">
-            <label for="nomor_resi">Nomor Resi</label>
-            <input type="text" class="form-control" id="nomor_resi" name="nomor_resi" required>
+        <div id="detail-pengantaran">
+            <!-- Dynamic fields will be inserted here -->
         </div>
-        <div class="form-group">
-            <label for="nama_penerima">Nama Penerima</label>
-            <input type="text" class="form-control" id="nama_penerima" name="nama_penerima" required>
-        </div>
-        <div class="form-group">
-            <label for="nohp">Nomor HP Penerima</label>
-            <input type="text" class="form-control" id="nohp" name="nohp" required>
-        </div>
-        <div class="form-group">
-            <label for="alamat_penerima">Alamat Penerima</label>
-            <input type="text" class="form-control" id="alamat_penerima" name="alamat_penerima" required>
-        </div>
-        <div class="form-group">
-            <label for="map">Pilih Lokasi pada Peta</label>
-            <div id="map" style="height: 400px;"></div>
-        </div>
-        <div class="form-group">
-            <label for="latitude">Latitude</label>
-            <input type="text" class="form-control" id="latitude" name="latitude" readonly>
-        </div>
-        <div class="form-group">
-            <label for="longitude">Longitude</label>
-            <input type="text" class="form-control" id="longitude" name="longitude" readonly>
-        </div>
-        <div class="form-group">
-            <label for="tanggal_pengantaran">Tanggal Pengantaran</label>
-            <input type="date" class="form-control" id="tanggal_pengantaran" name="tanggal_pengantaran" required>
-        </div>
+        <button type="button" class="btn btn-primary" id="add-detail">Tambah Detail Pengantaran</button>
+        <hr>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        var map;
-        var marker;
-        var geocoder;
+        $(document).ready(function() {
+            $('#add-detail').click(function() {
+                var jumlahPaket = $('#jumlah_paket').val();
+                $('#detail-pengantaran').empty(); // Clear previous inputs
 
-        function initMap() {
-            var payungSekaki = { lat: 0.4933, lng: 101.4409 }; // Koordinat Payung Sekaki, Pekanbaru
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: payungSekaki,
-                zoom: 15
+                for (var i = 1; i <= jumlahPaket; i++) {
+                    var detailHtml = `
+                        <div class="form-group">
+                            <h4>Detail Pengantaran Paket ${i}</h4>
+                            <label for="nomor_resi${i}">Nomor Resi</label>
+                            <input type="text" class="form-control" id="nomor_resi${i}" name="nomor_resi[]" required>
+                            <label for="tanggal_pengantaran${i}">Tanggal Pengantaran</label>
+                            <input type="date" class="form-control" id="tanggal_pengantaran${i}" name="tanggal_pengantaran[]" required>
+                            <label for="nama_penerima${i}">Nama Penerima</label>
+                            <input type="text" class="form-control" id="nama_penerima${i}" name="nama_penerima[]" required>
+                            <label for="nohp${i}">Nomor HP Penerima</label>
+                            <input type="text" class="form-control" id="nohp${i}" name="nohp[]" required>
+                            <label for="alamat_penerima${i}">Alamat Penerima</label>
+                            <input type="text" class="form-control" id="alamat_penerima${i}" name="alamat_penerima[]" required>
+                            <input type="hidden" id="latitude${i}" name="latitude[]">
+                            <input type="hidden" id="longitude${i}" name="longitude[]">
+                            <label for="map${i}">Pilih Lokasi pada Peta</label>
+                            <div id="map${i}" style="height: 300px;"></div>
+                            <hr>
+                        </div>
+                    `;
+                    $('#detail-pengantaran').append(detailHtml);
+                    initMap(`map${i}`, `latitude${i}`, `longitude${i}`);
+                }
             });
 
-            marker = new google.maps.Marker({
-                position: payungSekaki,
-                map: map,
-                draggable: true
-            });
+            function initMap(mapId, latId, lngId) {
+                var map;
+                var marker;
+                var geocoder;
 
-            // Update marker position saat marker didrag
-            google.maps.event.addListener(marker, 'dragend', function(event) {
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longitude').value = event.latLng.lng();
-                getAddress(event.latLng);
-            });
+                var defaultLocation = { lat: 0.4933, lng: 101.4409 }; // Default location Pekanbaru
 
-            // Update marker position saat map diklik
-            google.maps.event.addListener(map, 'click', function(event) {
-                marker.setPosition(event.latLng);
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longitude').value = event.latLng.lng();
-                getAddress(event.latLng);
-            });
+                map = new google.maps.Map(document.getElementById(mapId), {
+                    center: defaultLocation,
+                    zoom: 15
+                });
 
-            // Geocoder instance
-            geocoder = new google.maps.Geocoder();
+                marker = new google.maps.Marker({
+                    position: defaultLocation,
+                    map: map,
+                    draggable: true
+                });
 
-            // Listener untuk mengubah posisi marker berdasarkan alamat yang diinputkan
-            document.getElementById('alamat_penerima').addEventListener('change', function() {
-                var address = document.getElementById('alamat_penerima').value + ', Pekanbaru'; // Tambahkan Pekanbaru di sini
-                geocodeAddress(address);
-            });
-        }
+                google.maps.event.addListener(marker, 'dragend', function(event) {
+                    document.getElementById(latId).value = event.latLng.lat();
+                    document.getElementById(lngId).value = event.latLng.lng();
+                    updateAddress(latId, lngId, event.latLng);
+                });
 
-        function getAddress(latLng) {
-            geocoder.geocode({ 'location': latLng }, function(results, status) {
-                if (status === 'OK') {
-                    if (results[0]) {
-                        document.getElementById('alamat_penerima').value = results[0].formatted_address;
+                google.maps.event.addListener(map, 'click', function(event) {
+                    marker.setPosition(event.latLng);
+                    document.getElementById(latId).value = event.latLng.lat();
+                    document.getElementById(lngId).value = event.latLng.lng();
+                    updateAddress(latId, lngId, event.latLng);
+                });
+
+                geocoder = new google.maps.Geocoder();
+            }
+
+            function updateAddress(latId, lngId, latLng) {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'location': latLng }, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            document.getElementById(latId).value = latLng.lat();
+                            document.getElementById(lngId).value = latLng.lng();
+                            document.getElementById(`alamat_penerima${latId.charAt(latId.length - 1)}`).value = results[0].formatted_address;
+                        } else {
+                            window.alert('Alamat tidak ditemukan');
+                        }
                     } else {
-                        alert('No results found');
+                        window.alert('Geocoder failed due to: ' + status);
                     }
-                } else {
-                    alert('Geocoder failed due to: ' + status);
-                }
-            });
-        }
-
-        function geocodeAddress(address) {
-            geocoder.geocode({ 'address': address }, function(results, status) {
-                if (status === 'OK') {
-                    var location = results[0].geometry.location;
-                    map.setCenter(location);
-                    marker.setPosition(location);
-                    document.getElementById('latitude').value = location.lat();
-                    document.getElementById('longitude').value = location.lng();
-                } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
-                }
-            });
-        }
+                });
+            }
+        });
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKzWwLg-JdU&callback=initMap">
