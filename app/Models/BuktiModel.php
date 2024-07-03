@@ -13,8 +13,8 @@ class BuktiModel extends Model
     // Optional: Validation rules for form inputs
     protected $validationRules = [
         'tanggal_terima' => 'required|valid_date',
-        'waktu' => 'required|valid_time',
+        'waktu' => 'required|valid_date[H:i]',
         'keterangan' => 'required',
-        'gambar' => 'uploaded[gambar]|max_size[gambar,1024]|is_image[gambar]'
+        'gambar' => 'uploaded[gambar]|is_image[gambar]|max_size[gambar,1024]',
     ];
 }
