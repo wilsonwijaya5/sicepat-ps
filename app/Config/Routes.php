@@ -29,6 +29,14 @@ $routes->get('/admin/edit/(:num)', 'AdminController::edit/$1');
 $routes->post('/admin/update/(:num)', 'AdminController::update/$1');
 $routes->get('/admin/delete/(:num)', 'AdminController::delete/$1');
 
+$routes->get('/kurir', 'KurirController::index');
+$routes->get('/kurir/create', 'KurirController::create');
+$routes->post('/kurir/store', 'KurirController::store');
+$routes->get('/kurir/edit/(:num)', 'KurirController::edit/$1');
+$routes->post('/kurir/update/(:num)', 'KurirController::update/$1');
+$routes->get('/kurir/delete/(:num)', 'KurirController::delete/$1');
+
+
 $routes->get('/login', 'LoginController::index');
 $routes->post('/login/auth', 'LoginController::auth');
 $routes->get('/logout', 'LoginController::logout');
