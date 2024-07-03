@@ -45,6 +45,12 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/kurir/delete/(:num)', 'KurirController::delete/$1');
 
     $routes->get('/pengantaran', 'PengantaranController::index');
+    $routes->get('/pengantaran/create', 'PengantaranController::create');
+    $routes->post('/pengantaran/store', 'PengantaranController::store');
+    $routes->get('/pengantaran/edit/(:num)', 'PengantaranController::edit/$1');
+    $routes->post('/pengantaran/update/(:num)', 'PengantaranController::update/$1');
+    $routes->get('/pengantaran/delete/(:num)', 'PengantaranController::delete/$1');
+
 	
     $routes->get('/bukti', 'BuktiController::index');
 	$routes->get('/bukti/create', 'BuktiController::create');
