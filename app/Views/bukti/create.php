@@ -28,9 +28,21 @@
     </div>
     <div class="form-group">
         <label for="gambar">Gambar</label>
-        <input type="file" class="form-control-file" id="gambar" name="gambar" accept="image/*">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="gambar" name="gambar" accept="image/*" required>
+            <label class="custom-file-label" for="gambar">Choose file</label>
+        </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<script>
+    // JavaScript to show the selected file name in the custom file input
+    document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+        var fileName = document.getElementById("gambar").files[0].name;
+        var nextSibling = e.target.nextElementSibling
+        nextSibling.innerText = fileName
+    });
+</script>
 
 <?= $this->endSection() ?>
