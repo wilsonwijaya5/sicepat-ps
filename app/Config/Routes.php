@@ -22,7 +22,13 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
-$routes->get('/', 'Home::index');
+$routes->get('/login', 'LoginController::index');
+$routes->post('/login/auth', 'LoginController::auth');
+$routes->get('/logout', 'LoginController::logout');
+
+$routes->get('/', 'Home::index', ['filter' => 'auth']);
+
+
 $routes->get('/admin', 'AdminController::index');
 $routes->get('/kurir', 'KurirController::index');
 $routes->get('/pengantaran', 'PengantaranController::index');
