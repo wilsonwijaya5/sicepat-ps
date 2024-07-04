@@ -17,15 +17,15 @@
         <?= csrf_field() ?>
         <div class="form-group">
             <label for="region">Region</label>
-            <input type="text" class="form-control" id="region" name="region" value="<?= old('region', esc($pengantaran['region'])) ?>" required>
+            <input type="text" class="form-control" id="region" name="region" value="<?= old('region', esc($pengantaran['region'] ?? '')) ?>" required>
         </div>
         <div class="form-group">
             <label for="nama_kurir">Nama Kurir</label>
-            <input type="text" class="form-control" id="nama_kurir" name="nama_kurir" value="<?= old('nama_kurir', esc($pengantaran['nama_kurir'])) ?>" required>
+            <input type="text" class="form-control" id="nama_kurir" name="nama_kurir" value="<?= old('nama_kurir', esc($pengantaran['nama_kurir'] ?? '')) ?>" required>
         </div>
         <div class="form-group">
             <label for="jumlah_paket">Jumlah Paket</label>
-            <input type="number" class="form-control" id="jumlah_paket" name="jumlah_paket" value="<?= esc($pengantaran['jumlah_paket']) ?>" readonly>
+            <input type="number" class="form-control" id="jumlah_paket" name="jumlah_paket" value="<?= esc($pengantaran['jumlah_paket'] ?? '') ?>" readonly>
         </div>
 
         <!-- Container untuk detail pengantaran -->
@@ -34,60 +34,61 @@
         </div>
 
         <div class="form-group">
-            <label for="tanggal_pengantaran">Tanggal Pengantaran</label>
-            <input type="date" class="form-control" id="tanggal_pengantaran" name="tanggal_pengantaran" value="<?= old('tanggal_pengantaran', esc($pengantaran['tanggal_pengantaran'])) ?>" required>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
         </div>
-        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>
 
     <script>
         // Fungsi untuk menambahkan input fields untuk detail pengantaran
         function addDetailPengantaranFields() {
-            var jumlahPaket = <?= $pengantaran['jumlah_paket'] ?>;
+            var detailPengantaran = <?= json_encode($detail_pengantaran) ?>; // Ambil detail pengantaran dari PHP ke JavaScript
             var container = document.getElementById('detail_pengantaran_container');
             container.innerHTML = ''; // Bersihkan container sebelum menambahkan fields baru
 
-            <?php foreach ($detail_pengantaran as $i => $detail): ?>
+            detailPengantaran.forEach(function(detail, index) {
                 var div = document.createElement('div');
                 div.classList.add('form-group');
 
                 div.innerHTML = `
-                    <h4>Detail Pengantaran Paket ${<?= $i ?> + 1}</h4>
-                    <label for="nama_penerima_${<?= $i ?>}">Nama Penerima</label>
-                    <input type="text" class="form-control" id="nama_penerima_${<?= $i ?>}" name="nama_penerima[]" value="<?= old('nama_penerima[]', esc($detail['nama_penerima'])) ?>" required>
+                    <h4>Detail Pengantaran Paket ${index + 1}</h4>
+                    <label for="tanggal_pengantaran_${index}">Tanggal Pengantaran</label>
+                    <input type="date" class="form-control" id="tanggal_pengantaran_${index}" name="tanggal_pengantaran[]" value="<?= old('tanggal_pengantaran[]', esc($detail['tanggal_pengantaran'] ?? '')) ?>" required>
 
-                    <label for="nohp_${<?= $i ?>}">Nomor HP Penerima</label>
-                    <input type="text" class="form-control" id="nohp_${<?= $i ?>}" name="nohp[]" value="<?= old('nohp[]', esc($detail['nohp'])) ?>" required>
+                    <label for="nama_penerima_${index}">Nama Penerima</label>
+                    <input type="text" class="form-control" id="nama_penerima_${index}" name="nama_penerima[]" value="<?= old('nama_penerima[]', esc($detail['nama_penerima'] ?? '')) ?>" required>
 
-                    <label for="alamat_penerima_${<?= $i ?>}">Alamat Penerima</label>
-                    <textarea class="form-control" id="alamat_penerima_${<?= $i ?>}" name="alamat_penerima[]" rows="3" required><?= old('alamat_penerima[]', esc($detail['alamat_penerima'])) ?></textarea>
+                    <label for="nohp_${index}">Nomor HP Penerima</label>
+                    <input type="text" class="form-control" id="nohp_${index}" name="nohp[]" value="<?= old('nohp[]', esc($detail['nohp'] ?? '')) ?>" required>
 
-                    <input type="hidden" id="latitude_${<?= $i ?>}" name="latitude[]" value="<?= esc($detail['latitude']) ?>">
-                    <input type="hidden" id="longitude_${<?= $i ?>}" name="longitude[]" value="<?= esc($detail['longitude']) ?>">
+                    <label for="alamat_penerima_${index}">Alamat Penerima</label>
+                    <textarea class="form-control" id="alamat_penerima_${index}" name="alamat_penerima[]" rows="3" required><?= old('alamat_penerima[]', esc($detail['alamat_penerima'] ?? '')) ?></textarea>
 
-                    <label for="map_${<?= $i ?>}">Pilih Lokasi pada Peta</label>
-                    <div id="map_${<?= $i ?>}" style="height: 300px;"></div>
+                    <input type="hidden" id="latitude_${index}" name="latitude[]" value="<?= esc($detail['latitude'] ?? '') ?>">
+                    <input type="hidden" id="longitude_${index}" name="longitude[]" value="<?= esc($detail['longitude'] ?? '') ?>">
+
+                    <label for="map_${index}">Pilih Lokasi pada Peta</label>
+                    <div id="map_${index}" style="height: 300px;"></div>
                     <hr>
                 `;
 
                 container.appendChild(div);
 
                 // Initialize maps and markers here for each field
-                initMap(<?= $i ?>);
-            <?php endforeach; ?>
+                initMap(index, detail['latitude'], detail['longitude']);
+            });
         }
 
         // Panggil fungsi untuk menambahkan fields saat halaman dimuat
         document.addEventListener('DOMContentLoaded', addDetailPengantaranFields);
 
         // Initialize maps and markers
-        function initMap(index) {
+        function initMap(index, latitude, longitude) {
             var map;
             var marker;
             var geocoder;
 
             // Set default location or fetch from existing data if available
-            var defaultLocation = { lat: <?= esc($detail_pengantaran[$i]['latitude'] ?? 0) ?>, lng: <?= esc($detail_pengantaran[$i]['longitude'] ?? 0) ?> }; // Default location
+            var defaultLocation = { lat: parseFloat(latitude) || 0, lng: parseFloat(longitude) || 0 }; // Default location
 
             // Create map and marker for each field
             map = new google.maps.Map(document.getElementById('map_' + index), {

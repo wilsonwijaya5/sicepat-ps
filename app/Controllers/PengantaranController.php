@@ -27,6 +27,7 @@ class PengantaranController extends Controller
     {
         return view('pengantaran/create');
     }
+
     public function store()
     {
         $data = [
@@ -86,14 +87,14 @@ class PengantaranController extends Controller
 
         $this->pengantaranModel->update($id, $data);
 
-        $detailData = [];
         $namaPenerima = $this->request->getPost('nama_penerima');
         $nohp = $this->request->getPost('nohp');
         $alamatPenerima = $this->request->getPost('alamat_penerima');
         $latitude = $this->request->getPost('latitude');
         $longitude = $this->request->getPost('longitude');
-        $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran'); // Mengambil tanggal_pengantaran dari form
+        $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran');
 
+        $detailData = [];
         for ($i = 0; $i < count($namaPenerima); $i++) {
             $detailData[] = [
                 'pengantaran_id' => $id,
@@ -102,7 +103,7 @@ class PengantaranController extends Controller
                 'alamat_penerima' => $alamatPenerima[$i],
                 'latitude' => $latitude[$i],
                 'longitude' => $longitude[$i],
-                'tanggal_pengantaran' => $tanggalPengantaran, // Menyimpan tanggal_pengantaran di setiap detail pengantaran
+                'tanggal_pengantaran' => $tanggalPengantaran[$i],
             ];
         }
 
