@@ -44,9 +44,13 @@ class Autoload extends AutoloadConfig
      * @var array<string, list<string>|string>
      */
     public $psr4 = [
-        APP_NAMESPACE => APPPATH, // For custom app namespace
-        'Config'      => APPPATH . 'Config',
+        'App' => APPPATH,  // Pastikan ini sudah ada
+        'Config' => APPPATH . 'Config',
+        'App\Controllers' => APPPATH . 'Controllers',
+        'App\Models' => APPPATH . 'Models',
+        'App\Controllers\API' => APPPATH . 'Controllers/API', // Tambahkan ini jika belum ada
     ];
+    
 
     /**
      * -------------------------------------------------------------------

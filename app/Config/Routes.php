@@ -61,6 +61,11 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
 
 });
 
+$routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes) {
+    $routes->resource('admin', ['controller' => 'AdminAPI']);
+    // Definisi rute API lainnya
+});
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing
