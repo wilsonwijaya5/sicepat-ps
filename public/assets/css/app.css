@@ -801,7 +801,7 @@ footer {
   position: fixed;
   top: 0;
   z-index: 10;
-  background-color: #fff;
+  background-color: #BF3131;
   bottom: 0;
   border-right: 1px solid #eee;
   box-shadow: 0 0 10px #ececec;
@@ -830,7 +830,7 @@ footer {
   padding: 1.5rem 1.8rem 0.5rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #888;
+  color: #FFF;
   text-transform: uppercase;
 }
 .sidebar-wrapper .menu .sidebar-link {
@@ -840,12 +840,13 @@ footer {
   display: flex;
   align-items: center;
   transition: all 0.5s;
+  color: #FFFFFF; /* Warna teks putih */
 }
 .sidebar-wrapper .menu .sidebar-link:hover span {
   opacity: 1;
 }
 .sidebar-wrapper .menu .sidebar-link > span {
-  color: #053382;
+  color: #fff;
   font-weight: 500;
   margin-left: 1rem;
   opacity: 0.8;
@@ -873,7 +874,7 @@ footer {
   height: 100%;
   top: 0;
   bottom: 0;
-  background-color: rgba(46, 170, 244, 0.5);
+  background-color: #fff;
   width: 5px;
 }
 .sidebar-wrapper .menu .submenu {

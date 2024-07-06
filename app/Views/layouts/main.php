@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voler Admin Dashboard</title>
+    <title>Sicepat Admin Dashboard</title>
     
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.css') ?>">
@@ -29,11 +29,9 @@
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-left">
-                        <p>2020 &copy; Voler</p>
+                        <p>2024 &copy; Sicepat Payung Sekaki</p>
                     </div>
-                    <div class="float-right">
-                        <p>Crafted with <span class='text-danger'><i data-feather="heart"></i></span> by <a href="http://ahmadsaugi.com">Ahmad Saugi</a></p>
-                    </div>
+                   
                 </div>
             </footer>
         </div>
