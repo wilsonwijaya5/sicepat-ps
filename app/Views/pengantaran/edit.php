@@ -22,12 +22,12 @@
         <div class="form-group">
             <label for="nama_kurir">Nama Kurir</label>
             <select class="form-control" id="nama_kurir" name="kurir_id" required>
-    <?php foreach ($kurirs as $kurir): ?>
-        <option value="<?= $kurir['id'] ?>" <?= ($pengantaran['kurir_id'] == $kurir['id']) ? 'selected' : '' ?>>
-            <?= esc($kurir['nama_lengkap']) ?> <!-- Update this line to use 'nama_lengkap' -->
-        </option>
-    <?php endforeach; ?>
-</select>
+                <?php foreach ($kurirs as $kurir): ?>
+                    <option value="<?= $kurir['id'] ?>" <?= ($pengantaran['kurir_id'] == $kurir['id']) ? 'selected' : '' ?>>
+                        <?= esc($kurir['nama_lengkap']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="jumlah_paket">Jumlah Paket</label>
@@ -36,7 +36,29 @@
 
         <!-- Container untuk detail pengantaran -->
         <div id="detail_pengantaran_container">
-            <!-- JavaScript akan menambahkan input fields di sini -->
+            <?php foreach ($detail_pengantaran as $index => $detail): ?>
+                <div class="form-group">
+                    <h4>Detail Pengantaran Paket <?= $index + 1 ?></h4>
+                    <label for="tanggal_pengantaran_<?= $index ?>">Tanggal Pengantaran</label>
+                    <input type="date" class="form-control" id="tanggal_pengantaran_<?= $index ?>" name="tanggal_pengantaran[]" value="<?= old('tanggal_pengantaran[]', esc($detail['tanggal_pengantaran'] ?? '')) ?>" required>
+
+                    <label for="nama_penerima_<?= $index ?>">Nama Penerima</label>
+                    <input type="text" class="form-control" id="nama_penerima_<?= $index ?>" name="nama_penerima[]" value="<?= old('nama_penerima[]', esc($detail['nama_penerima'] ?? '')) ?>" required>
+
+                    <label for="nohp_<?= $index ?>">Nomor HP Penerima</label>
+                    <input type="text" class="form-control" id="nohp_<?= $index ?>" name="nohp[]" value="<?= old('nohp[]', esc($detail['nohp'] ?? '')) ?>" required>
+
+                    <label for="alamat_penerima_<?= $index ?>">Alamat Penerima</label>
+                    <textarea class="form-control" id="alamat_penerima_<?= $index ?>" name="alamat_penerima[]" rows="3" required><?= old('alamat_penerima[]', esc($detail['alamat_penerima'] ?? '')) ?></textarea>
+
+                    <input type="hidden" id="latitude_<?= $index ?>" name="latitude[]" value="<?= esc($detail['latitude'] ?? '') ?>">
+                    <input type="hidden" id="longitude_<?= $index ?>" name="longitude[]" value="<?= esc($detail['longitude'] ?? '') ?>">
+
+                    <label for="map_<?= $index ?>">Pilih Lokasi pada Peta</label>
+                    <div id="map_<?= $index ?>" style="height: 300px;"></div>
+                    <hr>
+                </div>
+            <?php endforeach; ?>
         </div>
 
         <div class="form-group">
@@ -76,83 +98,54 @@
                     <div id="map_${index}" style="height: 300px;"></div>
                     <hr>
                 `;
-
                 container.appendChild(div);
-
-                // Initialize maps and markers here for each field
-                initMap(index, detail['latitude'], detail['longitude']);
+                initializeMap(index, {lat: parseFloat(detail.latitude), lng: parseFloat(detail.longitude)});
             });
         }
 
-        // Panggil fungsi untuk menambahkan fields saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', addDetailPengantaranFields);
-
-        // Initialize maps and markers
-        function initMap(index, latitude, longitude) {
-            var map;
-            var marker;
-            var geocoder;
-
-            // Set default location or fetch from existing data if available
-            var defaultLocation = { lat: parseFloat(latitude) || 0, lng: parseFloat(longitude) || 0 }; // Default location
-
-            // Create map and marker for each field
-            map = new google.maps.Map(document.getElementById('map_' + index), {
-                center: defaultLocation,
-                zoom: 15
-            });
-
-            marker = new google.maps.Marker({
+        // Initialize map for each detail pengantaran field
+        function initializeMap(index, defaultLocation) {
+            var mapOptions = {
+                zoom: 15,
+                center: defaultLocation
+            };
+            var map = new google.maps.Map(document.getElementById('map_' + index), mapOptions);
+            var marker = new google.maps.Marker({
                 position: defaultLocation,
                 map: map,
                 draggable: true
             });
-
-            google.maps.event.addListener(marker, 'dragend', function(event) {
+            marker.addListener('dragend', function(event) {
                 document.getElementById('latitude_' + index).value = event.latLng.lat();
                 document.getElementById('longitude_' + index).value = event.latLng.lng();
                 updateAddress(index, event.latLng);
             });
 
-            google.maps.event.addListener(map, 'click', function(event) {
-                marker.setPosition(event.latLng);
-                document.getElementById('latitude_' + index).value = event.latLng.lat();
-                document.getElementById('longitude_' + index).value = event.latLng.lng();
-                updateAddress(index, event.latLng);
-            });
-
-            // Geocoder instance
-            geocoder = new google.maps.Geocoder();
-
-            // Get address based on initial coordinates
+            var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ 'location': defaultLocation }, function(results, status) {
                 if (status === 'OK') {
                     if (results[0]) {
                         document.getElementById('alamat_penerima_' + index).value = results[0].formatted_address;
-                    } else {
-                        alert('Alamat tidak ditemukan');
                     }
-                } else {
-                    alert('Geocoder gagal: ' + status);
                 }
             });
         }
 
-        // Update address based on new coordinates
         function updateAddress(index, latLng) {
             var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'location': latLng }, function(results, status) {
+            geocoder.geocode({ location: latLng }, function(results, status) {
                 if (status === 'OK') {
                     if (results[0]) {
                         document.getElementById('alamat_penerima_' + index).value = results[0].formatted_address;
-                    } else {
-                        alert('Alamat tidak ditemukan');
                     }
-                } else {
-                    alert('Geocoder gagal: ' + status);
                 }
             });
         }
+
+        // Panggil fungsi untuk menambahkan fields detail pengantaran saat halaman dimuat
+        addDetailPengantaranFields();
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=addDetailPengantaranFields" async defer></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKzWwLg-JdU&callback=addDetailPengantaranFields">
+    </script>
 <?= $this->endSection() ?>

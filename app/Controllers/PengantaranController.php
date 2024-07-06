@@ -92,8 +92,6 @@ class PengantaranController extends Controller
     // Redirect to the index page after successful insertion
     return redirect()->to('/pengantaran');
 }
-
-
 public function edit($id)
 {
     // Fetch pengantaran data
@@ -177,4 +175,3 @@ public function edit($id)
         return redirect()->to('/pengantaran');
     }
 }
-
