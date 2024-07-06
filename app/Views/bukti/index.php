@@ -3,8 +3,6 @@
 <?= $this->section('content') ?>
 <h1>Bukti List</h1>
 
-<a href="/bukti/create" class="btn btn-primary mb-3">Add Bukti</a>
-
 <?php if(session()->getFlashdata('success')): ?>
     <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
 <?php elseif(session()->getFlashdata('error')): ?>

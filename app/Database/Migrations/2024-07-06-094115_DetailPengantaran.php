@@ -38,14 +38,15 @@ class DetailPengantaran extends Migration
                 'type' => 'FLOAT',
                 'null' => true,
             ],
-            'tanggal_pengantaran' => [  // Menambah kolom tanggal_pengantaran
+            'tanggal_pengantaran' => [
                 'type' => 'DATE',
             ],
         ]);
-
+        
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('pengantaran_id', 'pengantaran', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('detail_pengantaran');
+        $this->forge->createTable('detail_pengantaran');        
+        
     }
 
     public function down()

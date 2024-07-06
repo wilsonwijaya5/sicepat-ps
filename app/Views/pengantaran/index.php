@@ -2,7 +2,13 @@
 
 <?= $this->section('content') ?>
     <h1>Data Pengantaran</h1>
-    <a href="/pengantaran/create" class="btn btn-primary mb-3">Tambah Data Pengantaran</a>
+    <?php if(session()->getFlashdata('success')): ?>
+    <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+<?php elseif(session()->getFlashdata('error')): ?>
+    <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+<?php endif; ?>
+    <a href="/pengantaran/create" class="btn btn-primary mb-3">Add Pengantaran</a>
+    
     <table class="table">
         <thead>
             <tr>
