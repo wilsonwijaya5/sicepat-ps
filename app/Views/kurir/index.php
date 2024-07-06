@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Kurir List</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-    <?= $this->include('partials/navbar') ?>
-    <div class="container mt-4">
-        <h2>Kurir List</h2>
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+<h1>Kurir List</h1>
         <a href="/kurir/create" class="btn btn-primary mb-3">Add Kurir</a>
+        <?php if(session()->getFlashdata('success')): ?>
+    <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+<?php elseif(session()->getFlashdata('error')): ?>
+    <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+<?php endif; ?>
+
         <table class="table">
             <thead>
                 <tr>
@@ -38,5 +38,5 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </div>
-</body>
+        
+<?= $this->endSection() ?>

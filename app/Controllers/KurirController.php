@@ -30,7 +30,7 @@ class KurirController extends BaseController
             'no_polisi' => $this->request->getPost('no_polisi')
         ];
         $model->save($data);
-        return redirect()->to('/kurir');
+        return redirect()->to('/kurir')->with('success', 'Kurir added successfully.');
     }
 
     public function edit($id)
@@ -52,13 +52,13 @@ class KurirController extends BaseController
             'no_polisi' => $this->request->getPost('no_polisi')
         ];
         $model->update($id, $data);
-        return redirect()->to('/kurir');
+        return redirect()->to('/kurir')->with('success', 'Kurir updated successfully.');
     }
 
     public function delete($id)
     {
         $model = new KurirModel();
         $model->delete($id);
-        return redirect()->to('/kurir');
+        return redirect()->to('/kurir')->with('success', 'Kurir deleted successfully.');
     }
 }

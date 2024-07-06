@@ -28,7 +28,7 @@ class AdminController extends BaseController
             'password' => hash('sha256', $this->request->getPost('password'))
         ];
         $model->save($data);
-        return redirect()->to('/admin');
+        return redirect()->to('/admin')->with('success', 'Admin added successfully.');;
     }
 
     public function edit($id)
@@ -48,13 +48,13 @@ class AdminController extends BaseController
             'password' => hash('sha256', $this->request->getPost('password'))
         ];
         $model->update($id, $data);
-        return redirect()->to('/admin');
+        return redirect()->to('/admin')->with('success', 'Admin updated successfully.');;
     }
 
     public function delete($id)
     {
         $model = new AdminModel();
         $model->delete($id);
-        return redirect()->to('/admin');
+        return redirect()->to('/admin')->with('success', 'Admin deleted successfully.');
     }
 }

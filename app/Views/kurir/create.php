@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
     <title>Add Kurir</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-    <?= $this->include('partials/navbar') ?>
-    <div class="container mt-4">
+    <?php if(session()->getFlashdata('errors')): ?>
+    <div class="alert alert-danger">
+        <ul>
+            <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                <li><?= esc($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
         <h2>Add Kurir</h2>
         <form action="/kurir/store" method="post">
             <div class="form-group">
@@ -35,6 +39,4 @@
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
-    </div>
-</body>
-</html>
+        <?= $this->endSection() ?>

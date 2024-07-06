@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Admin</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-    <?= $this->include('partials/navbar') ?>
-    <div class="container mt-4">
-        <h2>Add Admin</h2>
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+<h1>Add Admin</h1>
+
+<?php if(session()->getFlashdata('errors')): ?>
+    <div class="alert alert-danger">
+        <ul>
+            <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                <li><?= esc($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
         <form action="/admin/store" method="post">
             <div class="form-group">
                 <label for="nama_lengkap">Nama Lengkap</label>
@@ -27,6 +31,4 @@
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
-    </div>
-</body>
-</html>
+        <?= $this->endSection() ?>

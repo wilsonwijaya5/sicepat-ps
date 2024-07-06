@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Admin List</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-    <?= $this->include('partials/navbar') ?>
-    <div class="container mt-4">
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
         <h2>Admin List</h2>
         <a href="/admin/create" class="btn btn-primary mb-3">Add Admin</a>
+        <?php if(session()->getFlashdata('success')): ?>
+    <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+<?php elseif(session()->getFlashdata('error')): ?>
+    <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+<?php endif; ?>
         <table class="table">
             <thead>
                 <tr>
@@ -34,6 +34,5 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </div>
-</body>
-</html>
+ 
+<?= $this->endSection() ?>
