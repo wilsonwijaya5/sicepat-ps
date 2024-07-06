@@ -379,6 +379,11 @@ footer {
 }
 .btn.btn-primary {
   color: #fff;
+  background-color: #BF3131; /* Menambahkan warna latar belakang */
+}
+
+.btn.btn-primary:hover {
+  background-color: #a82828; /* Warna latar belakang saat tombol dihover */
 }
 .btn.btn-secondary {
   color: #fff;

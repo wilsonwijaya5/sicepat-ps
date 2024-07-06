@@ -2996,13 +2996,11 @@ progress {
 
 .btn-primary {
   color: #fff;
-  background-color: #5A8DEE;
-  border-color: #5A8DEE;
+
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #3775ea;
-  border-color: #2c6de9;
+
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
