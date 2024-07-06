@@ -19,9 +19,9 @@ class Pengantaran extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'nama_kurir' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
+            'kurir_id' => [ // Tambahkan kolom kurir_id sebagai foreign key
+                'type' => 'INT',
+                'unsigned' => true,
             ],
             'jumlah_paket' => [
                 'type' => 'INT',
@@ -29,6 +29,7 @@ class Pengantaran extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('kurir_id', 'kurir', 'id', 'CASCADE', 'CASCADE'); // Tambahkan foreign key constraint
         $this->forge->createTable('pengantaran');
     }
 

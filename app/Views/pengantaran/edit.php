@@ -21,7 +21,13 @@
         </div>
         <div class="form-group">
             <label for="nama_kurir">Nama Kurir</label>
-            <input type="text" class="form-control" id="nama_kurir" name="nama_kurir" value="<?= old('nama_kurir', esc($pengantaran['nama_kurir'] ?? '')) ?>" required>
+            <select class="form-control" id="nama_kurir" name="kurir_id" required>
+    <?php foreach ($kurirs as $kurir): ?>
+        <option value="<?= $kurir['id'] ?>" <?= ($pengantaran['kurir_id'] == $kurir['id']) ? 'selected' : '' ?>>
+            <?= esc($kurir['nama_lengkap']) ?> <!-- Update this line to use 'nama_lengkap' -->
+        </option>
+    <?php endforeach; ?>
+</select>
         </div>
         <div class="form-group">
             <label for="jumlah_paket">Jumlah Paket</label>

@@ -17,11 +17,20 @@
         <?= csrf_field() ?>
         <div class="form-group">
             <label for="region">Region</label>
-            <input type="text" class="form-control" id="region" name="region" required>
+            <select class="form-control" id="region" name="region" required>
+                <option value="Payung Sekaki">Payung Sekaki</option>
+                <option value="Rumbai">Rumbai</option>
+                <option value="Sukajadi">Sukajadi</option>
+                <option value="Senapelan">Senapelan</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="nama_kurir">Nama Kurir</label>
-            <input type="text" class="form-control" id="nama_kurir" name="nama_kurir" required>
+            <select class="form-control" id="nama_kurir" name="kurir_id" required> <!-- Ubah 'nama_kurir' menjadi 'kurir_id' -->
+                <?php foreach ($kurirs as $kurir): ?>
+                    <option value="<?= $kurir['id'] ?>"><?= $kurir['nama_lengkap'] ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="jumlah_paket">Jumlah Paket</label>

@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
     <h1>Data Pengantaran</h1>
-    <a href="/pengantaran/create" class="btn btn-primary mb-3">Add Pengantaran</a>
+    <a href="/pengantaran/create" class="btn btn-primary mb-3">Tambah Data Pengantaran</a>
     <table class="table">
         <thead>
             <tr>
@@ -18,7 +18,7 @@
                 <tr>
                     <td><?= $pengantar['id'] ?></td>
                     <td><?= $pengantar['region'] ?></td>
-                    <td><?= $pengantar['nama_kurir'] ?></td>
+                    <td><?= $pengantar['nama_lengkap'] ?></td> <!-- Memperbaiki untuk menggunakan 'nama_lengkap' dari 'kurir' -->
                     <td><?= $pengantar['jumlah_paket'] ?></td>
                     <td>
                         <a href="/pengantaran/edit/<?= $pengantar['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
