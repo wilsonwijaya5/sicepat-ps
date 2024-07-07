@@ -3,6 +3,7 @@
 namespace App\Controllers\API;
 
 use App\Models\KurirModel;
+use App\Models\PengantaranModel;
 use CodeIgniter\RESTful\ResourceController;
 
 class KurirAPI extends ResourceController
@@ -25,11 +26,15 @@ class KurirAPI extends ResourceController
             return $this->fail('Invalid username or password', 401);
         }
 
-        // Optionally generate a token here if you are implementing token-based authentication
+        // Fetch the delivery routes for the logged-in Kurir
+        $pengantaranModel = new PengantaranModel();
+        $pengantaran = $pengantaranModel->getPengantaranWithDetailsByKurir($kurir['id']);
+
         return $this->respond([
             'status' => 'success',
             'message' => 'Login successful',
-            'kurir' => $kurir
+            'kurir' => $kurir,
+            'pengantaran' => $pengantaran
         ]);
     }
 
