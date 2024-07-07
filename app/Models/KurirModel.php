@@ -10,7 +10,18 @@ class KurirModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = ['nama_lengkap', 'nohp', 'username', 'password', 'region', 'no_polisi'];
 
-    protected $useTimestamps = false; // Ubah menjadi true jika ada kolom timestamp di tabel
+    protected $useTimestamps = false; // Set to true if there are timestamp columns
+
+    protected $beforeInsert = ['hashPassword'];
+    protected $beforeUpdate = ['hashPassword'];
+
+    protected function hashPassword(array $data)
+    {
+        if (isset($data['data']['password'])) {
+            $data['data']['password'] = hash('sha256', $data['data']['password']);
+        }
+        return $data;
+    }
 
     public function getAllKurir()
     {

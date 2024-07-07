@@ -62,8 +62,10 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
 });
 
 $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes) {
-    $routes->resource('admin', ['controller' => 'AdminAPI']);
-    // Definisi rute API lainnya
+    $routes->post('kurir/login', 'KurirAPI::login'); // Add the login route for Kurir
+    $routes->resource('kurir', ['controller' => 'KurirAPI']); // Add the resource route for Kurir API
+    $routes->resource('admin', ['controller' => 'AdminAPI']); // Existing Admin API route
+    // Define other API routes here
 });
 
 /**
