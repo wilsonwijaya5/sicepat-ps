@@ -13,30 +13,42 @@ class KurirAPI extends ResourceController
 
     public function login()
     {
+        $rules = [
+            'username' => 'required',
+            'password' => 'required'
+        ];
+
+        if (!$this->validate($rules)) {
+            return $this->failValidationErrors($this->validator->getErrors());
+        }
+
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
-        
-        if (empty($username) || empty($password)) {
-            return $this->fail('Username and password are required', 400);
-        }
 
         $kurir = $this->model->where('username', $username)->first();
 
-        if (!$kurir || $kurir['password'] !== hash('sha256', $password)) {
-            return $this->fail('Invalid username or password', 401);
+        if (!$kurir) {
+            return $this->fail('Invalid username or password', 401); // 401 Unauthorized
         }
 
-        // Fetch the delivery routes for the logged-in Kurir
-        $pengantaranModel = new PengantaranModel();
-        $pengantaran = $pengantaranModel->getPengantaranWithDetailsByKurir($kurir['id']);
+        // Hash the incoming password
+        $hashedPassword = hash('sha256', $password);
+
+        if ($hashedPassword !== $kurir['password']) {
+            return $this->fail('Invalid username or password', 401); // 401 Unauthorized
+        }
+
+        // Remove the password before returning
+        unset($kurir['password']);
 
         return $this->respond([
             'status' => 'success',
             'message' => 'Login successful',
             'kurir' => $kurir,
-            'pengantaran' => $pengantaran
         ]);
     }
+
+    
 
     // Additional CRUD methods for Kurir
     public function index()

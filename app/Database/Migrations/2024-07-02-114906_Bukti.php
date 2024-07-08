@@ -16,7 +16,8 @@ class Bukti extends Migration
                 'auto_increment' => true,
             ],
             'tanggal_terima' => [
-                'type' => 'DATE',
+                'type' => 'VARCHAR', 
+                'constraint' => 255
             ],
             'waktu' => [
                 'type' => 'TIME',

@@ -79,6 +79,9 @@
 
                 div.innerHTML = `
                     <h4>Detail Pengantaran Paket ${index + 1}</h4>
+                    <label for="no_resi_<?= $index ?>">Nomor Resi</label>
+<input type="text" class="form-control" id="no_resi_<?= $index ?>" name="no_resi[]" value="<?= old('no_resi[]', esc($detail['no_resi'] ?? '')) ?>">
+
                     <label for="tanggal_pengantaran_${index}">Tanggal Pengantaran</label>
                     <input type="date" class="form-control" id="tanggal_pengantaran_${index}" name="tanggal_pengantaran[]" value="<?= old('tanggal_pengantaran[]', esc($detail['tanggal_pengantaran'] ?? '')) ?>" required>
 

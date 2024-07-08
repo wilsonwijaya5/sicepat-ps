@@ -34,35 +34,41 @@ class PengantaranController extends Controller
 
     public function store()
     {
-        // Define validation rules for the form inputs
+        // Dynamic Validation Rules
+        $jumlahPaket = $this->request->getPost('jumlah_paket');
+
+        // Validate the form inputs
         $validationRules = [
             'region' => 'required',
             'kurir_id' => 'required',
-            'jumlah_paket' => 'required|numeric',
-            'nama_penerima.*' => 'required',
-            'nohp.*' => 'required',
-            'alamat_penerima.*' => 'required',
-            'tanggal_pengantaran.*' => 'required',
+            'jumlah_paket' => 'required|numeric'
         ];
 
-        // Validate the form inputs
+        for ($i = 0; $i < $jumlahPaket; $i++) {
+            $validationRules['no_resi.' . $i] = 'required';
+            $validationRules['nama_penerima.' . $i] = 'required';
+            $validationRules['nohp.' . $i] = 'required';
+            $validationRules['alamat_penerima.' . $i] = 'required';
+            $validationRules['tanggal_pengantaran.' . $i] = 'required';
+        }
+
         if (!$this->validate($validationRules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
-
+    
         // Retrieve the selected kurir_id from the form input
         $kurirId = $this->request->getPost('kurir_id');
-
+    
         // Prepare data for pengantaran insertion
         $dataPengantaran = [
             'region' => $this->request->getPost('region'),
             'kurir_id' => $kurirId,
             'jumlah_paket' => $this->request->getPost('jumlah_paket'),
         ];
-
+    
         // Insert pengantaran data into database and get the inserted ID
         $pengantaranId = $this->pengantaranModel->insert($dataPengantaran);
-
+    
         // Prepare data for detail pengantaran insertion
         $namaPenerima = $this->request->getPost('nama_penerima');
         $nohp = $this->request->getPost('nohp');
@@ -70,9 +76,10 @@ class PengantaranController extends Controller
         $latitude = $this->request->getPost('latitude');
         $longitude = $this->request->getPost('longitude');
         $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran');
-
+        $noResi = $this->request->getPost('no_resi'); // Get no_resi values from form
+    
         $detailData = [];
-
+    
         // Iterate through the submitted details and prepare data for insertion
         for ($i = 0; $i < count($namaPenerima); $i++) {
             $detailData[] = [
@@ -83,14 +90,15 @@ class PengantaranController extends Controller
                 'latitude' => $latitude[$i],
                 'longitude' => $longitude[$i],
                 'tanggal_pengantaran' => $tanggalPengantaran[$i],
+                'no_resi' => $noResi[$i], // Assign no_resi for each detail entry
             ];
         }
-
+    
         // Insert batch of detail pengantaran data into database
         $this->detailPengantaranModel->insertBatch($detailData);
-
+    
         // Redirect to the index page after successful insertion
-        return redirect()->to('/pengantaran')->with('success', 'Kurir added successfully.');
+        return redirect()->to('/pengantaran')->with('success', 'Pengantaran added successfully.');
     }
 
     public function edit($id)
@@ -107,57 +115,61 @@ class PengantaranController extends Controller
     }
 
     public function update($id)
-    {
-        // Define validation rules for the form inputs
-        $validationRules = [
-            'region' => 'required',
-            'kurir_id' => 'required',
-            'jumlah_paket' => 'required|numeric',
-            'tanggal_pengantaran.*' => 'required',
-            'nama_penerima.*' => 'required',
-            'nohp.*' => 'required',
-            'alamat_penerima.*' => 'required',
-        ];
+{
+    // Define validation rules for the form inputs
+    $validationRules = [
+        'region' => 'required',
+        'kurir_id' => 'required',
+        'jumlah_paket' => 'required|numeric',
+        'tanggal_pengantaran.*' => 'required',
+        'nama_penerima.*' => 'required',
+        'nohp.*' => 'required',
+        'alamat_penerima.*' => 'required',
+        'no_resi.*' => 'required', // New validation rule for no_resi
+    ];
 
-        // Validate the form inputs
-        if (!$this->validate($validationRules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
-        // Update pengantaran data
-        $dataPengantaran = [
-            'region' => $this->request->getPost('region'),
-            'kurir_id' => $this->request->getPost('kurir_id'),
-            'jumlah_paket' => $this->request->getPost('jumlah_paket'),
-        ];
-        $this->pengantaranModel->update($id, $dataPengantaran);
-
-        // Prepare data for detail pengantaran update
-        $namaPenerima = $this->request->getPost('nama_penerima');
-        $nohp = $this->request->getPost('nohp');
-        $alamatPenerima = $this->request->getPost('alamat_penerima');
-        $latitude = $this->request->getPost('latitude');
-        $longitude = $this->request->getPost('longitude');
-        $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran');
-
-        foreach ($namaPenerima as $index => $nama) {
-            $detailData = [
-                'pengantaran_id' => $id,
-                'nama_penerima' => $namaPenerima[$index],
-                'nohp' => $nohp[$index],
-                'alamat_penerima' => $alamatPenerima[$index],
-                'latitude' => $latitude[$index],
-                'longitude' => $longitude[$index],
-                'tanggal_pengantaran' => $tanggalPengantaran[$index],
-            ];
-
-            // Update detail pengantaran data
-            $this->detailPengantaranModel->update($index + 1, $detailData); // Assuming $index + 1 is the detail_id
-        }
-
-        // Redirect to the index page after successful update
-        return redirect()->to('/pengantaran')->with('success', 'Data updated successfully.');
+    // Validate the form inputs
+    if (!$this->validate($validationRules)) {
+        return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
     }
+
+    // Update pengantaran data
+    $dataPengantaran = [
+        'region' => $this->request->getPost('region'),
+        'kurir_id' => $this->request->getPost('kurir_id'),
+        'jumlah_paket' => $this->request->getPost('jumlah_paket'),
+    ];
+    $this->pengantaranModel->update($id, $dataPengantaran);
+
+    // Prepare data for detail pengantaran update
+    $namaPenerima = $this->request->getPost('nama_penerima');
+    $nohp = $this->request->getPost('nohp');
+    $alamatPenerima = $this->request->getPost('alamat_penerima');
+    $latitude = $this->request->getPost('latitude');
+    $longitude = $this->request->getPost('longitude');
+    $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran');
+    $noResi = $this->request->getPost('no_resi'); // Get no_resi values from form
+
+    foreach ($namaPenerima as $index => $nama) {
+        $detailData = [
+            'pengantaran_id' => $id,
+            'nama_penerima' => $namaPenerima[$index],
+            'nohp' => $nohp[$index],
+            'alamat_penerima' => $alamatPenerima[$index],
+            'latitude' => $latitude[$index],
+            'longitude' => $longitude[$index],
+            'tanggal_pengantaran' => $tanggalPengantaran[$index],
+            'no_resi' => $noResi[$index], // Assign no_resi for each detail entry
+        ];
+
+        // Update detail pengantaran data
+        $this->detailPengantaranModel->update($index + 1, $detailData); // Assuming $index + 1 is the detail_id
+    }
+
+    // Redirect to the index page after successful update
+    return redirect()->to('/pengantaran')->with('success', 'Pengantaran data updated successfully.');
+}
+
 
     public function delete($id)
     {

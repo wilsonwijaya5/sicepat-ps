@@ -39,14 +39,23 @@ class DetailPengantaran extends Migration
                 'null' => true,
             ],
             'tanggal_pengantaran' => [
-                'type' => 'DATE',
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'no_resi' => [
+                'type' => 'VARCHAR',
+                'constraint' => 50, // Sesuaikan dengan kebutuhan
+            ],
+            'status' => [
+                'type' => 'ENUM',
+                'constraint' => ['pending', 'delivered', 'failed'], // Pilihan status yang tersedia
+                'default' => 'pending', // Nilai default
             ],
         ]);
         
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('pengantaran_id', 'pengantaran', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('detail_pengantaran');        
-        
     }
 
     public function down()
