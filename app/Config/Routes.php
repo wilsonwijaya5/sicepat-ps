@@ -29,7 +29,7 @@ $routes->get('/logout', 'LoginController::logout');
 
 // Group routes that require authentication
 $routes->group('', ['filter' => 'auth'], function($routes) {
-    $routes->get('/', 'Home::index');
+    $routes->get('/home', 'Home::index');
     $routes->get('/admin', 'AdminController::index');
     $routes->get('/admin/create', 'AdminController::create');
     $routes->post('/admin/store', 'AdminController::store');

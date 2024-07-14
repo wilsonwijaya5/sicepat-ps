@@ -1,51 +1,101 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\API;
 
-use App\Models\AdminModel;
-use CodeIgniter\Controller;
+use App\Models\KurirModel;
+use CodeIgniter\RESTful\ResourceController;
 
-class LoginController extends Controller
+class KurirAPI extends ResourceController
 {
-    public function index()
-    {
-        return view('auth/login');
-    }
+    protected $modelName = 'App\Models\KurirModel';
+    protected $format = 'json';
 
-    public function auth()
+    public function login()
     {
-        $session = session();
-        $model = new AdminModel();
-        $username = $this->request->getVar('username');
-        $password = $this->request->getVar('password');
+        $rules = [
+            'username' => 'required',
+            'password' => 'required' // Expecting the password to be already hashed by the client
+        ];
+
+        if (!$this->validate($rules)) {
+            return $this->failValidationErrors($this->validator->getErrors());
+        }
+
+        $username = $this->request->getPost('username');
+        $password = $this->request->getPost('password'); // This should be the SHA-256 hashed password from client
+
+        $model = new KurirModel();
         $data = $model->where('username', $username)->first();
-        
+
         if ($data) {
-            $hashed_input_password = hash('sha256', $password);
             $stored_hashed_password = $data['password'];
-            
-            if ($hashed_input_password === $stored_hashed_password) {
-                $ses_data = [
-                    'id' => $data['id'],
-                    'username' => $data['username'],
-                    'isLoggedIn' => true
-                ];
-                $session->set($ses_data);
-                return redirect()->to('/home');
+
+            if ($password === $stored_hashed_password) {
+                // Generate a response without setting session data, as it's a REST API
+                return $this->respond([
+                    'status' => 'success',
+                    'message' => 'Login successful',
+                    'kurir' => [
+                        'id' => $data['id'],
+                        'username' => $data['username'],
+                        'nama_lengkap' => $data['nama_lengkap'],
+                        'nohp' => $data['nohp'],
+                        'region' => $data['region'],
+                        'no_polisi' => $data['no_polisi']
+                    ],
+                ]);
             } else {
-                $session->setFlashdata('msg', 'Wrong Password');
-                return redirect()->to('/login');
+                return $this->fail('Wrong Password', 401);
             }
         } else {
-            $session->setFlashdata('msg', 'Username not found');
-            return redirect()->to('/login');
+            return $this->failNotFound('Username not found');
         }
     }
 
-    public function logout()
+    // Additional CRUD methods for Kurir
+    public function index()
     {
-        $session = session();
-        $session->destroy();
-        return redirect()->to('/login');
+        $kurirs = $this->model->findAll();
+        return $this->respond($kurirs);
+    }
+
+    public function show($id = null)
+    {
+        $kurir = $this->model->find($id);
+        if ($kurir) {
+            return $this->respond($kurir);
+        }
+        return $this->failNotFound('Kurir not found');
+    }
+
+    public function create()
+    {
+        $data = $this->request->getPost();
+        $data['password'] = hash('sha256', $data['password']); // Hash the password before saving
+        if ($this->model->insert($data)) {
+            return $this->respondCreated($data);
+        }
+        return $this->failValidationErrors($this->model->errors());
+    }
+
+    public function update($id = null)
+    {
+        $data = $this->request->getRawInput();
+        if (isset($data['password'])) {
+            $data['password'] = hash('sha256', $data['password']); // Hash the password before updating
+        }
+        if ($this->model->update($id, $data)) {
+            return $this->respond($data);
+        }
+        return $this->failValidationErrors($this->model->errors());
+    }
+
+    public function delete($id = null)
+    {
+        if ($this->model->delete($id)) {
+            return $this->respondDeleted(['id' => $id]);
+        }
+        return $this->failNotFound('Kurir not found');
     }
 }
+?>
