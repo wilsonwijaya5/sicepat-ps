@@ -37,6 +37,12 @@
                         <span>Bukti</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a href="<?= base_url('/logout') ?>" class="sidebar-link">
+                        <i data-feather="log-out" width="20"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
