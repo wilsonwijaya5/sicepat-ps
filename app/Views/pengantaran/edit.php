@@ -39,6 +39,7 @@
             <?php foreach ($detail_pengantaran as $index => $detail): ?>
                 <div class="form-group">
                     <h4>Detail Pengantaran Paket <?= $index + 1 ?></h4>
+                    <input type="hidden" name="detail_id[]" value="<?= esc($detail['id'] ?? '') ?>"> <!-- Hidden input for detail_id -->
                     <label for="tanggal_pengantaran_<?= $index ?>">Tanggal Pengantaran</label>
                     <input type="date" class="form-control" id="tanggal_pengantaran_<?= $index ?>" name="tanggal_pengantaran[]" value="<?= old('tanggal_pengantaran[]', esc($detail['tanggal_pengantaran'] ?? '')) ?>" required>
 
@@ -78,6 +79,8 @@
                 div.classList.add('form-group');
 
                 div.innerHTML = `
+                    <h4>Detail Pengantaran Paket ${index + 1}</h4>
+                     <input type="hidden" name="detail_id[]" value="<?= esc($detail['id'] ?? '') ?>"> <!-- Hidden input for detail_id -->
                     <h4>Detail Pengantaran Paket ${index + 1}</h4>
                     <label for="no_resi_<?= $index ?>">Nomor Resi</label>
 <input type="text" class="form-control" id="no_resi_<?= $index ?>" name="no_resi[]" value="<?= old('no_resi[]', esc($detail['no_resi'] ?? '')) ?>">

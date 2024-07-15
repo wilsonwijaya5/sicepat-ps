@@ -50,6 +50,7 @@ class PengantaranController extends Controller
             $validationRules['nohp.' . $i] = 'required';
             $validationRules['alamat_penerima.' . $i] = 'required';
             $validationRules['tanggal_pengantaran.' . $i] = 'required';
+            $validationRules['status.' . $i] = 'required'; 
         }
 
         if (!$this->validate($validationRules)) {
@@ -76,8 +77,8 @@ class PengantaranController extends Controller
         $latitude = $this->request->getPost('latitude');
         $longitude = $this->request->getPost('longitude');
         $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran');
-        $noResi = $this->request->getPost('no_resi'); // Get no_resi values from form
-    
+        $noResi = $this->request->getPost('no_resi');
+        $status = $this->request->getPost('status');
         $detailData = [];
     
         // Iterate through the submitted details and prepare data for insertion
@@ -90,7 +91,8 @@ class PengantaranController extends Controller
                 'latitude' => $latitude[$i],
                 'longitude' => $longitude[$i],
                 'tanggal_pengantaran' => $tanggalPengantaran[$i],
-                'no_resi' => $noResi[$i], // Assign no_resi for each detail entry
+                'no_resi' => $noResi[$i], 
+                'status' => $status[$i],
             ];
         }
     
@@ -125,7 +127,8 @@ class PengantaranController extends Controller
         'nama_penerima.*' => 'required',
         'nohp.*' => 'required',
         'alamat_penerima.*' => 'required',
-        'no_resi.*' => 'required', // New validation rule for no_resi
+        'no_resi.*' => 'required', 
+        'status.*' => 'required',
     ];
 
     // Validate the form inputs
@@ -148,7 +151,8 @@ class PengantaranController extends Controller
     $latitude = $this->request->getPost('latitude');
     $longitude = $this->request->getPost('longitude');
     $tanggalPengantaran = $this->request->getPost('tanggal_pengantaran');
-    $noResi = $this->request->getPost('no_resi'); // Get no_resi values from form
+    $noResi = $this->request->getPost('no_resi'); 
+    $status = $this->request->getPost('status');
 
     foreach ($namaPenerima as $index => $nama) {
         $detailData = [
@@ -159,7 +163,8 @@ class PengantaranController extends Controller
             'latitude' => $latitude[$index],
             'longitude' => $longitude[$index],
             'tanggal_pengantaran' => $tanggalPengantaran[$index],
-            'no_resi' => $noResi[$index], // Assign no_resi for each detail entry
+            'no_resi' => $noResi[$index], 
+            'status' => $status[$index],
         ];
 
         // Update detail pengantaran data

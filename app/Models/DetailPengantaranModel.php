@@ -9,7 +9,7 @@ class DetailPengantaranModel extends Model
     protected $table = 'detail_pengantaran';
     protected $primaryKey = 'id';
     protected $allowedFields = [
-        'pengantaran_id', 'nama_penerima', 'nohp', 'alamat_penerima', 'latitude', 'longitude','tanggal_pengantaran','no_resi'
+        'pengantaran_id', 'nama_penerima', 'nohp', 'alamat_penerima', 'latitude', 'longitude','tanggal_pengantaran','no_resi','status'
     ];
 
     // Tambahan metode atau pengaturan lain sesuai kebutuhan aplikasi
