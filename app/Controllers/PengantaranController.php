@@ -159,8 +159,8 @@ class PengantaranController extends Controller
             'tanggal_pengantaran' => $detail['tanggal_pengantaran'],
             'no_resi' => $detail['no_resi'],
             'status' => $detail['status'],
-            'latitude' => $detail['latitude'],   // Pastikan nilai latitude disertakan
-            'longitude' => $detail['longitude'], // Pastikan nilai longitude disertakan
+            'latitude' => $detail['latitude'],
+            'longitude' => $detail['longitude'],
         ];
     
         // Update detail pengantaran data

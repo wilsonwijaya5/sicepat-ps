@@ -60,9 +60,14 @@
                         <input type="date" class="form-control" id="tanggal_pengantaran<?= $index ?>" name="detail_pengantaran[<?= $index ?>][tanggal_pengantaran]" value="<?= old("detail_pengantaran.${index}.tanggal_pengantaran", esc($detail['tanggal_pengantaran'] ?? '')) ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="status<?= $index ?>">Status</label>
-                        <input type="text" class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" value="<?= old("detail_pengantaran.${index}.status", esc($detail['status'] ?? '')) ?>" required>
+                    <label for="status<?= $index ?>">Status</label>
+                    <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" required>
+                        <option value="Pending" <?= ($detail['status'] == 'Pending') ? 'selected' : '' ?>>Pending</option>
+                        <option value="Delivered" <?= ($detail['status'] == 'Delivered') ? 'selected' : '' ?>>Delivered</option>
+                        <option value="Failed" <?= ($detail['status'] == 'Failed') ? 'selected' : '' ?>>Failed</option>
+                    </select>
                     </div>
+                     </div>
                     <input type="hidden" id="latitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][latitude]" value="<?= old("detail_pengantaran.${index}.latitude", esc($detail['latitude'] ?? '')) ?>">
                     <input type="hidden" id="longitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][longitude]" value="<?= old("detail_pengantaran.${index}.longitude", esc($detail['longitude'] ?? '')) ?>">
                     <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>
