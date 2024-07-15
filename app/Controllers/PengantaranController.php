@@ -150,7 +150,6 @@ class PengantaranController extends Controller
     // Ensure to use the primary key condition in update method
     $this->pengantaranModel->update($id, $dataPengantaran);
 
-    // Prepare detail pengantaran data
     foreach ($this->request->getPost('detail_pengantaran') as $detail) {
         $detailId = $detail['id'];
         $detailData = [
@@ -160,8 +159,10 @@ class PengantaranController extends Controller
             'tanggal_pengantaran' => $detail['tanggal_pengantaran'],
             'no_resi' => $detail['no_resi'],
             'status' => $detail['status'],
+            'latitude' => $detail['latitude'],   // Pastikan nilai latitude disertakan
+            'longitude' => $detail['longitude'], // Pastikan nilai longitude disertakan
         ];
-
+    
         // Update detail pengantaran data
         $this->detailPengantaranModel->update($detailId, $detailData);
     }
