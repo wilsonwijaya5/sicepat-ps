@@ -52,35 +52,38 @@
                 $('#detail-pengantaran').empty(); // Clear previous inputs
 
                 for (var i = 0; i < jumlahPaket; i++) {
-      var detailHtml = `
-        <div class="form-group">
-          <h4>Detail Pengantaran Paket ${i+1}</h4>  
-          <label for="no_resi${i}">Nomor Resi</label>
-          <input type="text" class="form-control" id="no_resi${i}" name="no_resi[]" required>
+                    var detailHtml = `
+                        <div class="form-group">
+                            <h4>Detail Pengantaran Paket ${i+1}</h4>  
+                            <label for="no_resi${i}">Nomor Resi</label>
+                            <input type="text" class="form-control" id="no_resi${i}" name="no_resi[]" required>
 
-          <label for="tanggal_pengantaran${i}">Tanggal Pengantaran</label>
-          <input type="date" class="form-control" id="tanggal_pengantaran${i}" name="tanggal_pengantaran[]" required>
+                            <label for="tanggal_pengantaran${i}">Tanggal Pengantaran</label>
+                            <input type="date" class="form-control" id="tanggal_pengantaran${i}" name="tanggal_pengantaran[]" required>
 
-          <label for="nama_penerima${i}">Nama Penerima</label>
-          <input type="text" class="form-control" id="nama_penerima${i}" name="nama_penerima[]" required>
+                            <label for="nama_penerima${i}">Nama Penerima</label>
+                            <input type="text" class="form-control" id="nama_penerima${i}" name="nama_penerima[]" required>
 
-          <label for="nohp${i}">Nomor HP Penerima</label>
-          <input type="text" class="form-control" id="nohp${i}" name="nohp[]" required>
+                            <label for="nohp${i}">Nomor HP Penerima</label>
+                            <input type="text" class="form-control" id="nohp${i}" name="nohp[]" required>
 
-          <label for="alamat_penerima${i}">Alamat Penerima</label>
-          <input type="text" class="form-control" id="alamat_penerima${i}" name="alamat_penerima[]" required>
+                            <label for="alamat_penerima${i}">Alamat Penerima</label>
+                            <input type="text" class="form-control" id="alamat_penerima${i}" name="alamat_penerima[]" required>
 
-          <input type="hidden" id="latitude${i}" name="latitude[]">
-          <input type="hidden" id="longitude${i}" name="longitude[]">
+                            <label for="status${i}">Status</label>
+                            <input type="text" class="form-control" id="status${i}" name="status[]" value="pending" readonly>
 
-          <label for="map${i}">Pilih Lokasi pada Peta</label>
-          <div id="map${i}" style="height: 300px;"></div>
-          <hr>
-        </div>
-      `;
-      $('#detail-pengantaran').append(detailHtml);
-      initMap(`map${i}`, `latitude${i}`, `longitude${i}`); 
-    }
+                            <input type="hidden" id="latitude${i}" name="latitude[]">
+                            <input type="hidden" id="longitude${i}" name="longitude[]">
+
+                            <label for="map${i}">Pilih Lokasi pada Peta</label>
+                            <div id="map${i}" style="height: 300px;"></div>
+                            <hr>
+                        </div>
+                    `;
+                    $('#detail-pengantaran').append(detailHtml);
+                    initMap(`map${i}`, `latitude${i}`, `longitude${i}`); 
+                }
             });
 
             function initMap(mapId, latId, lngId) {
