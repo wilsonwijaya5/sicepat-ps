@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <label for="nama_kurir">Nama Kurir</label>
-            <select class="form-control" id="nama_kurir" name="kurir_id" required> <!-- Ubah 'nama_kurir' menjadi 'kurir_id' -->
+            <select class="form-control" id="nama_kurir" name="kurir_id" required>
                 <?php foreach ($kurirs as $kurir): ?>
                     <option value="<?= $kurir['id'] ?>"><?= $kurir['nama_lengkap'] ?></option>
                 <?php endforeach; ?>
@@ -82,11 +82,11 @@
                         </div>
                     `;
                     $('#detail-pengantaran').append(detailHtml);
-                    initMap(`map${i}`, `latitude${i}`, `longitude${i}`); 
+                    initMap(`map${i}`, `latitude${i}`, `longitude${i}`, `alamat_penerima${i}`); 
                 }
             });
 
-            function initMap(mapId, latId, lngId) {
+            function initMap(mapId, latId, lngId, addressId) {
                 var map;
                 var marker;
                 var geocoder;
@@ -107,32 +107,52 @@
                 google.maps.event.addListener(marker, 'dragend', function(event) {
                     document.getElementById(latId).value = event.latLng.lat();
                     document.getElementById(lngId).value = event.latLng.lng();
-                    updateAddress(latId, lngId, event.latLng);
+                    updateAddress(latId, lngId, addressId, event.latLng);
                 });
 
                 google.maps.event.addListener(map, 'click', function(event) {
                     marker.setPosition(event.latLng);
                     document.getElementById(latId).value = event.latLng.lat();
                     document.getElementById(lngId).value = event.latLng.lng();
-                    updateAddress(latId, lngId, event.latLng);
+                    updateAddress(latId, lngId, addressId, event.latLng);
                 });
 
                 geocoder = new google.maps.Geocoder();
+
+                // Add event listener for address input
+                var addressInput = document.getElementById(addressId);
+                addressInput.addEventListener('blur', function() {
+                    geocodeAddress(addressInput.value, map, marker, latId, lngId);
+                });
             }
 
-            function updateAddress(latId, lngId, latLng) {
+            function updateAddress(latId, lngId, addressId, latLng) {
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode({ 'location': latLng }, function(results, status) {
                     if (status === 'OK') {
                         if (results[0]) {
                             document.getElementById(latId).value = latLng.lat();
                             document.getElementById(lngId).value = latLng.lng();
-                            document.getElementById(`alamat_penerima${latId.charAt(latId.length - 1)}`).value = results[0].formatted_address;
+                            document.getElementById(addressId).value = results[0].formatted_address;
                         } else {
                             window.alert('Alamat tidak ditemukan');
                         }
                     } else {
                         window.alert('Geocoder failed due to: ' + status);
+                    }
+                });
+            }
+
+            function geocodeAddress(address, map, marker, latId, lngId) {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'address': address}, function(results, status) {
+                    if (status === 'OK') {
+                        map.setCenter(results[0].geometry.location);
+                        marker.setPosition(results[0].geometry.location);
+                        document.getElementById(latId).value = results[0].geometry.location.lat();
+                        document.getElementById(lngId).value = results[0].geometry.location.lng();
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
                     }
                 });
             }
