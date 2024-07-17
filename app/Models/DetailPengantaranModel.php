@@ -12,5 +12,9 @@ class DetailPengantaranModel extends Model
         'pengantaran_id', 'nama_penerima', 'nohp', 'alamat_penerima', 'latitude', 'longitude','tanggal_pengantaran','no_resi','status'
     ];
 
-    // Tambahan metode atau pengaturan lain sesuai kebutuhan aplikasi
+    // Metode untuk menghitung jumlah pengantaran berdasarkan status
+    public function getCountByStatus($status)
+    {
+        return $this->where('status', $status)->countAllResults();
+    }
 }

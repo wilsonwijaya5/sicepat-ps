@@ -61,21 +61,23 @@
                     </div>
                     <div class="form-group">
                     <label for="status<?= $index ?>">Status</label>
-                    <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" required>
+                    <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" disabled>
                         <option value="Pending" <?= ($detail['status'] == 'Pending') ? 'selected' : '' ?>>Pending</option>
                         <option value="Delivered" <?= ($detail['status'] == 'Delivered') ? 'selected' : '' ?>>Delivered</option>
                         <option value="Failed" <?= ($detail['status'] == 'Failed') ? 'selected' : '' ?>>Failed</option>
                     </select>
+                    <label for="map<?= $index ?>">Map</label>
+                    <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>
                     </div>
-                     </div>
                     <input type="hidden" id="latitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][latitude]" value="<?= old("detail_pengantaran.${index}.latitude", esc($detail['latitude'] ?? '')) ?>">
                     <input type="hidden" id="longitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][longitude]" value="<?= old("detail_pengantaran.${index}.longitude", esc($detail['longitude'] ?? '')) ?>">
-                    <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>
+               
                 </div>
             </div>
         <?php endforeach; ?>
 
         <button type="submit" class="btn btn-primary">Update Pengantaran</button>
+        </div>
     </form>
 
     <script>
