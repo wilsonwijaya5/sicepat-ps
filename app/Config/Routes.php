@@ -67,7 +67,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
     $routes->resource('admin', ['controller' => 'AdminAPI']); // Existing Admin API route
     $routes->resource('bukti', ['controller' => 'BuktiAPI']);
     $routes->get('pengantaran/kurir/(:num)', 'PengantaranAPI::getPengantaranByKurir/$1');
-
+    $routes->get('rute/optimize/(:num)', 'RuteAPI::optimizeRoute/$1');
     // Define other API routes here
 });
 

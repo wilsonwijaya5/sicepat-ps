@@ -61,11 +61,14 @@
                     </div>
                     <div class="form-group">
                     <label for="status<?= $index ?>">Status</label>
-                    <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" disabled>
+                    <select class="form-control" id="status<?= $index ?>" name="status_display" disabled>
                         <option value="Pending" <?= ($detail['status'] == 'Pending') ? 'selected' : '' ?>>Pending</option>
                         <option value="Delivered" <?= ($detail['status'] == 'Delivered') ? 'selected' : '' ?>>Delivered</option>
-                        <option value="Failed" <?= ($detail['status'] == 'Failed') ? 'selected' : '' ?>>Failed</option>
                     </select>
+                    <input type="hidden" name="detail_pengantaran[<?= $index ?>][status]" value="<?= $detail['status'] ?>">
+                </div>
+
+
                     <label for="map<?= $index ?>">Map</label>
                     <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>
                     </div>

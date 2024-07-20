@@ -18,7 +18,7 @@ class PengantaranAPI extends ResourceController
             ->get();
 
         $pengantaran = $pengantaranQuery->getResultArray();
-
+        
         // Ambil detail pengantaran untuk setiap pengantaran
         foreach ($pengantaran as &$item) {
             $detailPengantaranQuery = $db->table('detail_pengantaran')
