@@ -68,6 +68,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
     $routes->resource('bukti', ['controller' => 'BuktiAPI']);
     $routes->get('pengantaran/kurir/(:num)', 'PengantaranAPI::getPengantaranByKurir/$1');
     $routes->get('rute/optimize/(:num)', 'RuteAPI::optimizeRoute/$1');
+    $routes->post('pengantaran/update-status', 'PengantaranAPI::updateStatus');
+
     // Define other API routes here
 });
 

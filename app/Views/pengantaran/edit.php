@@ -67,7 +67,7 @@
                     </select>
                     <input type="hidden" name="detail_pengantaran[<?= $index ?>][status]" value="<?= $detail['status'] ?>">
                 </div>
-
+                <div class="form-group">
 
                     <label for="map<?= $index ?>">Map</label>
                     <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>

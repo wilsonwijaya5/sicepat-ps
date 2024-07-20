@@ -3,10 +3,16 @@
 namespace App\Controllers\API;
 
 use CodeIgniter\RESTful\ResourceController;
+use App\Models\DetailPengantaranModel;
 
 class PengantaranAPI extends ResourceController
 {
     protected $format = 'json';
+    
+    public function __construct()
+    {
+        $this->detailPengantaranModel = new DetailPengantaranModel();
+    }
 
     public function getPengantaranByKurir($kurirId)
     {
@@ -32,6 +38,22 @@ class PengantaranAPI extends ResourceController
             return $this->respond($pengantaran);
         } else {
             return $this->failNotFound('Pengantaran not found for kurir ID: ' . $kurirId);
+        }
+    }
+    
+    public function updateStatus()
+    {
+        $id = $this->request->getPost('id');
+        $status = $this->request->getPost('status');
+
+        $data = [
+            'status' => $status
+        ];
+
+        if ($this->detailPengantaranModel->update($id, $data)) {
+            return $this->respond(['message' => 'Status updated successfully']);
+        } else {
+            return $this->failServerError('Failed to update status');
         }
     }
 }
