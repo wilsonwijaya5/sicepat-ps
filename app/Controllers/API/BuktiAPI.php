@@ -17,7 +17,7 @@ class BuktiAPI extends ResourceController
             'tanggal_terima' => 'required|valid_date',
             'waktu' => 'required|valid_date[H:i]',
             'keterangan' => 'required',
-            'gambar' => 'uploaded[gambar]|is_image[gambar]|max_size[gambar,1024]',
+            'gambar' => 'uploaded[gambar]|is_image[gambar]|max_size[gambar,5048]',
         ];
 
         if (!$this->validate($rules)) {
@@ -26,17 +26,17 @@ class BuktiAPI extends ResourceController
 
         $img = $this->request->getFile('gambar');
         $newName = $img->getRandomName();
-        $img->move(WRITEPATH . 'uploads', $newName);
+        $img->move(FCPATH . 'uploads', $newName);
 
         $data = [
             'tanggal_terima' => $this->request->getPost('tanggal_terima'),
-            'waktu' => date('H:i'),
+            'waktu' => $this->request->getPost('waktu'),
             'keterangan' => $this->request->getPost('keterangan'),
             'gambar' => $newName,
         ];
 
         if (!$this->model->save($data)) {
-            return $this->fail('Failed to save data');
+            return $this->fail($this->model->errors());
         }
 
         return $this->respondCreated(['status' => 'success', 'data' => $data]);

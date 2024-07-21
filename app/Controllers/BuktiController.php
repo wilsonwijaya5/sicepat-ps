@@ -37,7 +37,7 @@ class BuktiController extends BaseController
         $gambar = $this->request->getFile('gambar');
         if ($gambar->isValid() && !$gambar->hasMoved()) {
             $newName = $gambar->getRandomName();
-            $gambar->move(ROOTPATH . 'public/uploads', $newName);
+            $gambar->move(ROOTPATH . 'public/uploads', $newName); // Save file to 'public/uploads'
             $gambarPath = 'uploads/' . $newName;
         } else {
             $gambarPath = '';
@@ -51,9 +51,11 @@ class BuktiController extends BaseController
             'gambar' => $gambarPath,
         ];
 
-        $this->buktiModel->save($data);
-
-        return redirect()->to('/bukti')->with('success', 'Bukti added successfully.');
+        if ($this->buktiModel->save($data)) {
+            return redirect()->to('/bukti')->with('success', 'Bukti added successfully.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Failed to save data');
+        }
     }
 
     public function edit($id)
@@ -75,10 +77,10 @@ class BuktiController extends BaseController
         $gambar = $this->request->getFile('gambar');
         if ($gambar->isValid() && !$gambar->hasMoved()) {
             $newName = $gambar->getRandomName();
-            $gambar->move(ROOTPATH . 'public/uploads', $newName);
+            $gambar->move(ROOTPATH . 'public/uploads', $newName); // Save file to 'public/uploads'
             $gambarPath = 'uploads/' . $newName;
         } else {
-            $gambarPath = $this->request->getVar('gambar_lama'); // Keep existing image if no new one uploaded
+            $gambarPath = $this->request->getVar('gambar_lama'); // Use old image if no new one
         }
 
         // Update database record
@@ -89,9 +91,11 @@ class BuktiController extends BaseController
             'gambar' => $gambarPath,
         ];
 
-        $this->buktiModel->update($id, $data);
-
-        return redirect()->to('/bukti')->with('success', 'Bukti updated successfully.');
+        if ($this->buktiModel->update($id, $data)) {
+            return redirect()->to('/bukti')->with('success', 'Bukti updated successfully.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Failed to update data');
+        }
     }
 
     public function delete($id)
@@ -100,13 +104,16 @@ class BuktiController extends BaseController
 
         if ($bukti) {
             // Delete image file if exists
-            if (!empty($bukti['gambar'])) {
+            if (!empty($bukti['gambar']) && file_exists(ROOTPATH . 'public/' . $bukti['gambar'])) {
                 unlink(ROOTPATH . 'public/' . $bukti['gambar']);
             }
 
             // Delete record from database
-            $this->buktiModel->delete($id);
-            return redirect()->to('/bukti')->with('success', 'Bukti deleted successfully.');
+            if ($this->buktiModel->delete($id)) {
+                return redirect()->to('/bukti')->with('success', 'Bukti deleted successfully.');
+            } else {
+                return redirect()->to('/bukti')->with('error', 'Failed to delete data');
+            }
         } else {
             return redirect()->to('/bukti')->with('error', 'Bukti not found.');
         }
