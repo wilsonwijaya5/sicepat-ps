@@ -132,7 +132,6 @@ class RuteAPI extends ResourceController
                 }
             }
         }
-
         return $this->reconstructPath($parent);
     }
 
