@@ -27,7 +27,10 @@
                 <td><?= $row['tanggal_terima'] ?></td>
                 <td><?= $row['waktu'] ?></td>
                 <td><?= $row['keterangan'] ?></td>
-                <td><img src="<?= base_url($row['gambar']) ?>" alt="Gambar Bukti" style="max-width: 150px;"></td>
+                <td>
+                <img src="<?= base_url('uploads/' . $row['gambar']) ?>" alt="Gambar Bukti" style="max-width: 150px;">
+
+                </td>
                 <td>
                     <a href="/bukti/edit/<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
                     <a href="/bukti/delete/<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>

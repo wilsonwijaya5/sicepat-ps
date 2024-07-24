@@ -33,4 +33,15 @@ class PengantaranModel extends Model
                     ->where('kurir_id', $kurirId)
                     ->findAll();
     }
+    public function updateStatus($id)
+    {
+        $status = $this->request->getPost('status');
+
+        if (!$this->model->update($id, ['status' => $status])) {
+            return $this->fail('Failed to update status');
+        }
+
+        return $this->respond(['message' => 'Status pengantaran berhasil diperbarui']);
+    }
+
 }
