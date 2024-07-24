@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sicepat</title>
-    <link rel="stylesheet" href="<?= base_url('/assets/css/bootstrap.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.css') ?>">
     
-    <link rel="stylesheet" href="<?= base_url('/assets/css/app.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
     <style>
         body {
             background-color: #F8E8EE; /* Soft red background OR use #F6FDC3 for cream */
