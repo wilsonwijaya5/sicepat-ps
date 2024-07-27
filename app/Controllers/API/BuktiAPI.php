@@ -11,62 +11,49 @@ class BuktiAPI extends ResourceController
     protected $modelName = 'App\Models\BuktiModel';
     protected $format    = 'json';
 
-    public function __construct()
-    {
-        // Initialize Cloudinary configuration using CLOUDINARY_URL
-        Configuration::instance(getenv('CLOUDINARY_URL'));
-    }
-
     public function create()
     {
         try {
-            helper(['form', 'url']);
-            
-            // Check if file is uploaded
             $img = $this->request->getFile('gambar');
-            if (!$img) {
-                return $this->fail('No image file uploaded.');
-            }
-            
-            log_message('debug', 'File upload: ' . $img->getName());
 
-            // Validate file
             if (!$img->isValid()) {
-                log_message('error', 'File upload error: ' . $img->getErrorString());
                 return $this->fail($img->getErrorString());
             }
 
-            // Generate a new name and move the file
-            $newName = $img->getRandomName();
-            $uploadPath = WRITEPATH . 'uploads/';
+            // Configure Cloudinary
+            Configuration::instance([
+                'cloud' => [
+                    'cloud_name' => 'hv4fjb6q8',
+                    'api_key'    => '366896636491343',
+                    'api_secret' => '8GrLiJrgfDXTliMDzvWSzYiSAqs',
+                ],
+                'url' => [
+                    'secure' => true,
+                ],
+            ]);
 
-            // Ensure the upload directory exists
-            if (!is_dir($uploadPath)) {
-                if (!mkdir($uploadPath, 0755, true)) {
-                    log_message('error', 'Failed to create upload directory: ' . $uploadPath);
-                    return $this->fail('Failed to create upload directory.');
-                }
-            }
+            // Initialize Cloudinary
+            $cloudinary = new Cloudinary();
 
-            if (!$img->move($uploadPath, $newName)) {
-                log_message('error', 'Failed to move uploaded file.');
-                return $this->fail('Failed to move uploaded file.');
-            }
+            // Upload the image to Cloudinary
+            $uploadResult = $cloudinary->uploadApi()->upload(
+                $img->getTempName(),
+                ['public_id' => pathinfo($img->getName(), PATHINFO_FILENAME)]
+            );
 
-            log_message('debug', 'File moved successfully to: ' . $uploadPath . $newName);
+            $filename = $uploadResult['public_id'] . '.' . $uploadResult['format'];
 
             $data = [
                 'tanggal_terima' => $this->request->getPost('tanggal_terima'),
                 'waktu' => $this->request->getPost('waktu'),
                 'keterangan' => $this->request->getPost('keterangan'),
-                'gambar' => $newName,
+                'gambar' => $filename,
             ];
 
-            // Skip validation for now (if necessary)
+            // Disable validation temporarily
             $this->model->skipValidation(true);
 
             if (!$this->model->insert($data)) {
-                log_message('error', 'Failed to insert data into the database: ' . print_r($this->model->errors(), true));
                 return $this->fail($this->model->errors());
             }
 
@@ -77,5 +64,3 @@ class BuktiAPI extends ResourceController
         }
     }
 }
-
-
