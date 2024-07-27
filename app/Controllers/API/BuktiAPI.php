@@ -19,7 +19,7 @@ class BuktiAPI extends ResourceController
             }
     
             $newName = $img->getRandomName();
-            $uploadPath = WRITEPATH . 'uploads/'; // Use WRITEPATH which is writable in Heroku
+            $uploadPath = '/tmp/uploads/'; // Use /tmp directory for uploads
     
             // Ensure the upload directory exists
             if (!is_dir($uploadPath)) {
@@ -27,6 +27,7 @@ class BuktiAPI extends ResourceController
             }
     
             if (!$img->move($uploadPath, $newName)) {
+                log_message('error', 'Failed to move uploaded file.');
                 return $this->fail('Failed to move uploaded file.');
             }
     
@@ -44,6 +45,7 @@ class BuktiAPI extends ResourceController
             $this->model->skipValidation(true);
     
             if (!$this->model->insert($data)) {
+                log_message('error', 'Failed to insert data into the database: ' . print_r($this->model->errors(), true));
                 return $this->fail($this->model->errors());
             }
     
@@ -54,3 +56,4 @@ class BuktiAPI extends ResourceController
         }
     }    
 }
+
