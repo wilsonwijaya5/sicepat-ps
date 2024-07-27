@@ -12,6 +12,6 @@ class BuktiModel extends Model
         'tanggal_terima' => 'required|valid_date',
         'waktu' => 'required',
         'keterangan' => 'required',
-        'gambar' => 'permit_empty|is_image[gambar]'
+        'gambar' => 'required'
     ];
 }
