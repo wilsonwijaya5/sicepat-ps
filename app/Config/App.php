@@ -16,7 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'https://prjctakhir-91b24c417509.herokuapp.com/';
+    public string $baseURL = 'https://sicepat-pysk-e89b5ce47713.herokuapp.com/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
