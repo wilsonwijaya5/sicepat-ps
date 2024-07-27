@@ -32,8 +32,8 @@
         <input type="file" class="form-control-file" id="gambar" name="gambar" accept="image/*">
         <?php if (!empty($bukti['gambar'])): ?>
             <?php
-            // Ensure the path includes 'uploads'
-            $imageUrl = base_url('uploads/' . $bukti['gambar']);
+            // Construct the Cloudinary URL
+            $imageUrl = 'https://res.cloudinary.com/hv4fjb6q8/image/upload/' . esc($bukti['gambar']);
             ?>
             <input type="hidden" name="gambar_lama" value="<?= esc($bukti['gambar']) ?>">
             <div class="mt-2">
