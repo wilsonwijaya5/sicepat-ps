@@ -29,17 +29,17 @@
     </div>
     <div class="form-group">
         <label for="gambar">Gambar</label>
-        <input type="file" class="form-control-file" id="gambar" name="gambar" accept="image/*">
+        <!-- <input type="file" class="form-control-file" id="gambar" name="gambar" accept="image/*"> -->
         <?php if (!empty($bukti['gambar'])): ?>
             <?php
             // Construct the Cloudinary URL
             $imageUrl = 'https://res.cloudinary.com/hv4fjb6q8/image/upload/' . esc($bukti['gambar']);
             ?>
             <input type="hidden" name="gambar_lama" value="<?= esc($bukti['gambar']) ?>">
-            <div class="mt-2">
+            <!-- <div class="mt-2">
                 <p>Image URL: <?= esc($imageUrl) ?></p>
                 <img src="<?= esc($imageUrl) ?>" alt="Current Gambar" style="max-width: 200px;">
-            </div>
+            </div> -->
         <?php endif; ?>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
