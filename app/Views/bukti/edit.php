@@ -36,10 +36,10 @@
             $imageUrl = 'https://res.cloudinary.com/hv4fjb6q8/image/upload/' . esc($bukti['gambar']);
             ?>
             <input type="hidden" name="gambar_lama" value="<?= esc($bukti['gambar']) ?>">
-            <!-- <div class="mt-2">
-                <p>Image URL: <?= esc($imageUrl) ?></p>
+            <div class="mt-2">
+                <!-- <p>Image URL: <?= esc($imageUrl) ?></p> -->
                 <img src="<?= esc($imageUrl) ?>" alt="Current Gambar" style="max-width: 200px;">
-            </div> -->
+            </div>
         <?php endif; ?>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
