@@ -31,7 +31,7 @@ class Database extends Config
         'hostname' => 'mwgmw3rs78pvwk4e.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'username' => 'n7adfd8yjqgg6ycl',
         'password' => 'cv7hyrqy4v18ah0k',
-        'database' => 'bgb7vg89ual10cqw	',
+        'database' => 'bgb7vg89ual10cqw',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
