@@ -28,10 +28,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'      => '',
-        'hostname' => 'aqx5w9yc5brambgl.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        'username' => 'ed95pu4w7s3j0bbg',
-        'password' => 'vkgtaqk8565lr7y7',
-        'database' => 'go891cly1biz38mw',
+        'hostname' => 'mwgmw3rs78pvwk4e.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        'username' => 'n7adfd8yjqgg6ycl',
+        'password' => 'cv7hyrqy4v18ah0k',
+        'database' => 'bgb7vg89ual10cqw',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
