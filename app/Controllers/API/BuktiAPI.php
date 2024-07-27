@@ -12,6 +12,7 @@ class BuktiAPI extends ResourceController
     public function create()
     {
         helper(['form', 'url']);
+        log_message('debug', 'Entering BuktiAPI create method.');
 
         $rules = [
             'tanggal_terima' => 'required|valid_date',
@@ -21,12 +22,17 @@ class BuktiAPI extends ResourceController
         ];
 
         if (!$this->validate($rules)) {
+            log_message('error', 'Validation failed: ' . json_encode($this->validator->getErrors()));
             return $this->fail($this->validator->getErrors());
         }
 
         $img = $this->request->getFile('gambar');
         $newName = $img->getRandomName();
-        $img->move(FCPATH . 'uploads', $newName);
+        
+        if (!$img->move(FCPATH . 'uploads', $newName)) {
+            log_message('error', 'Image upload failed.');
+            return $this->fail('Image upload failed.');
+        }
 
         $data = [
             'tanggal_terima' => $this->request->getPost('tanggal_terima'),
@@ -36,9 +42,11 @@ class BuktiAPI extends ResourceController
         ];
 
         if (!$this->model->save($data)) {
+            log_message('error', 'Model save failed: ' . json_encode($this->model->errors()));
             return $this->fail($this->model->errors());
         }
 
+        log_message('debug', 'Data saved successfully: ' . json_encode($data));
         return $this->respondCreated(['status' => 'success', 'data' => $data]);
     }
 }
