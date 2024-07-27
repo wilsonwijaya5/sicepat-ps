@@ -3,9 +3,9 @@
 <?= $this->section('content') ?>
 <h1>Bukti List</h1>
 
-<?php if(session()->getFlashdata('success')): ?>
+<?php if (session()->getFlashdata('success')): ?>
     <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
-<?php elseif(session()->getFlashdata('error')): ?>
+<?php elseif (session()->getFlashdata('error')): ?>
     <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
 <?php endif; ?>
 
@@ -28,8 +28,8 @@
                 <td><?= $row['waktu'] ?></td>
                 <td><?= $row['keterangan'] ?></td>
                 <td>
-                <img src="<?= base_url('uploads/' . $row['gambar']) ?>" alt="Gambar Bukti" style="max-width: 150px;">
-
+                    <!-- Display image from Cloudinary -->
+                    <img src="https://res.cloudinary.com/hv4fjb6q8/image/upload/<?= $row['gambar'] ?>" alt="Gambar Bukti" style="max-width: 150px;">
                 </td>
                 <td>
                     <a href="/bukti/edit/<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
