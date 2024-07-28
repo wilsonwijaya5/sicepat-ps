@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers\API;
 
 use App\Models\BuktiModel;
@@ -23,9 +24,9 @@ class BuktiAPI extends ResourceController
             // Configure Cloudinary
             Configuration::instance([
                 'cloud' => [
-                    'cloud_name' => 'hv4fjb6q8',
-                    'api_key'    => '366896636491343',
-                    'api_secret' => '8GrLiJrgfDXTliMDzvWSzYiSAqs',
+                    'cloud_name' => 'huajcm9nv',
+                    'api_key'    => '174137736135129',
+                    'api_secret' => 'J7N5I5RwAlr15yuJEiR7DpURH4Y',
                 ],
                 'url' => [
                     'secure' => true,
