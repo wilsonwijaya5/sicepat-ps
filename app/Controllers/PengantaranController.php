@@ -173,10 +173,11 @@ class PengantaranController extends Controller
     
     public function getKurirsByRegion($region)
     {
-        $kurirs = $this->kurirModel->getKurirsByRegion($region);
+        $kurirModel = new KurirModel();
+        $kurirs = $kurirModel->getKurirsByRegion($region);
+
         return $this->response->setJSON($kurirs);
     }
-
     
 
 
