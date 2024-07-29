@@ -43,7 +43,7 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/kurir/edit/(:num)', 'KurirController::edit/$1');
     $routes->post('/kurir/update/(:num)', 'KurirController::update/$1');
     $routes->get('/kurir/delete/(:num)', 'KurirController::delete/$1');
-    $routes->get('/kurir/region/(:any)', 'PengantaranController::getKurirsByRegion/$1');
+    $routes->get('pengantaran/getKurirsByRegion/(:segment)', 'PengantaranController::getKurirsByRegion/$1');
 
     $routes->get('/pengantaran', 'PengantaranController::index');
     $routes->get('/pengantaran/create', 'PengantaranController::create');
