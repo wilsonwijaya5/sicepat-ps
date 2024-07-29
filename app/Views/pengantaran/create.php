@@ -27,9 +27,7 @@
         <div class="form-group">
             <label for="nama_kurir">Nama Kurir</label>
             <select class="form-control" id="nama_kurir" name="kurir_id" required>
-                <?php foreach ($kurirs as $kurir): ?>
-                    <option value="<?= $kurir['id'] ?>"><?= $kurir['nama_lengkap'] ?></option>
-                <?php endforeach; ?>
+                <!-- Options will be populated dynamically -->
             </select>
         </div>
         <div class="form-group">
@@ -47,6 +45,44 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            var kurirsByRegion = {
+                "Payung Sekaki": [
+                    {id: 1, nama_lengkap: 'Kurir A'},
+                    {id: 2, nama_lengkap: 'Kurir B'}
+                ],
+                "Rumbai": [
+                    {id: 3, nama_lengkap: 'Kurir C'},
+                    {id: 4, nama_lengkap: 'Kurir D'}
+                ],
+                "Sukajadi": [
+                    {id: 5, nama_lengkap: 'Kurir E'},
+                    {id: 6, nama_lengkap: 'Kurir F'}
+                ],
+                "Senapelan": [
+                    {id: 7, nama_lengkap: 'Kurir G'},
+                    {id: 8, nama_lengkap: 'Kurir H'}
+                ]
+            };
+
+            function updateKurirOptions(region) {
+                var kurirSelect = $('#nama_kurir');
+                kurirSelect.empty(); // Clear existing options
+
+                if (kurirsByRegion[region]) {
+                    kurirsByRegion[region].forEach(function(kurir) {
+                        kurirSelect.append(new Option(kurir.nama_lengkap, kurir.id));
+                    });
+                }
+            }
+
+            $('#region').change(function() {
+                var selectedRegion = $(this).val();
+                updateKurirOptions(selectedRegion);
+            });
+
+            // Initialize kurir options based on default selected region
+            updateKurirOptions($('#region').val());
+
             $('#add-detail').click(function() {
                 var jumlahPaket = $('#jumlah_paket').val();
                 $('#detail-pengantaran').empty(); // Clear previous inputs
@@ -159,6 +195,6 @@
         });
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKzWwLg-JdU&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKuj5yJRaCw&callback=initMap">
     </script>
 <?= $this->endSection() ?>
