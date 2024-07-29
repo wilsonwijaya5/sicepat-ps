@@ -171,6 +171,13 @@ class PengantaranController extends Controller
     return redirect()->to('/pengantaran')->with('success', 'Pengantaran updated successfully.');
 }
     
+    public function getKurirsByRegion($region)
+    {
+        $kurirs = $this->kurirModel->getKurirsByRegion($region);
+        return $this->response->setJSON($kurirs);
+    }
+
+    
 
 
 
