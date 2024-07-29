@@ -29,7 +29,7 @@
                 <td><?= $row['keterangan'] ?></td>
                 <td>
                     <!-- Display image from Cloudinary -->
-                    <img src="https://res.cloudinary.com/hv4fjb6q8/image/upload/<?= $row['gambar'] ?>" alt="Gambar Bukti" style="max-width: 150px;">
+                    <img src="https://res.cloudinary.com/huajcm9nv/image/upload/<?= $row['gambar'] ?>" alt="Gambar Bukti" style="max-width: 150px;">
                 </td>
                 <td>
                     <a href="/bukti/edit/<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
