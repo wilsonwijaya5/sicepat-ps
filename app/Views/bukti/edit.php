@@ -33,7 +33,7 @@
         <?php if (!empty($bukti['gambar'])): ?>
             <?php
             // Construct the Cloudinary URL
-            $imageUrl = 'https://res.cloudinary.com/hv4fjb6q8/image/upload/' . esc($bukti['gambar']);
+            $imageUrl = 'https://res.cloudinary.com/huajcm9nv/image/upload/' . esc($bukti['gambar']);
             ?>
             <input type="hidden" name="gambar_lama" value="<?= esc($bukti['gambar']) ?>">
             <div class="mt-2">
