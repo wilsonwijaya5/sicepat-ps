@@ -142,14 +142,14 @@
 
                 google.maps.event.addListener(marker, 'dragend', function(event) {
                     document.getElementById(latId).value = event.latLng.lat();
-                    document.getElementById(lngId).value = event.latLng.lng();
+                    document.getElementId(lngId).value = event.latLng.lng();
                     updateAddress(latId, lngId, addressId, event.latLng);
                 });
 
                 google.maps.event.addListener(map, 'click', function(event) {
                     marker.setPosition(event.latLng);
                     document.getElementById(latId).value = event.latLng.lat();
-                    document.getElementById(lngId).value = event.latLng.lng();
+                    document.getElementId(lngId).value = event.latLng.lng();
                     updateAddress(latId, lngId, addressId, event.latLng);
                 });
 
@@ -194,7 +194,5 @@
             }
         });
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKuj5yJRaCw&callback=initMap">
-    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKuj5yJRaCw&callback=initMap"></script>
 <?= $this->endSection() ?>
