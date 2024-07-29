@@ -20,6 +20,10 @@ class KurirModel extends Model
             return password_verify($inputPassword, $storedPassword);
         }
     }
+    public function getKurirsByRegion($region)
+    {
+        return $this->where('region', $region)->findAll();
+    }
     public function getAllKurir()
     {
         return $this->findAll();
