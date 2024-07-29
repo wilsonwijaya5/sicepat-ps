@@ -46,22 +46,10 @@
     <script>
         $(document).ready(function() {
             var kurirsByRegion = {
-                "Payung Sekaki": [
-                    {id: 1, nama_lengkap: 'Kurir A'},
-                    {id: 2, nama_lengkap: 'Kurir B'}
-                ],
-                "Rumbai": [
-                    {id: 3, nama_lengkap: 'Kurir C'},
-                    {id: 4, nama_lengkap: 'Kurir D'}
-                ],
-                "Sukajadi": [
-                    {id: 5, nama_lengkap: 'Kurir E'},
-                    {id: 6, nama_lengkap: 'Kurir F'}
-                ],
-                "Senapelan": [
-                    {id: 7, nama_lengkap: 'Kurir G'},
-                    {id: 8, nama_lengkap: 'Kurir H'}
-                ]
+                "Payung Sekaki": [],
+                "Rumbai": [],
+                "Sukajadi": [],
+                "Senapelan": []
             };
 
             function updateKurirOptions(region) {
@@ -142,14 +130,14 @@
 
                 google.maps.event.addListener(marker, 'dragend', function(event) {
                     document.getElementById(latId).value = event.latLng.lat();
-                    document.getElementId(lngId).value = event.latLng.lng();
+                    document.getElementById(lngId).value = event.latLng.lng();
                     updateAddress(latId, lngId, addressId, event.latLng);
                 });
 
                 google.maps.event.addListener(map, 'click', function(event) {
                     marker.setPosition(event.latLng);
                     document.getElementById(latId).value = event.latLng.lat();
-                    document.getElementId(lngId).value = event.latLng.lng();
+                    document.getElementById(lngId).value = event.latLng.lng();
                     updateAddress(latId, lngId, addressId, event.latLng);
                 });
 
@@ -194,5 +182,7 @@
             }
         });
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKuj5yJRaCw&callback=initMap"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKuj5yJRaCw&callback=initMap">
+    </script>
 <?= $this->endSection() ?>
