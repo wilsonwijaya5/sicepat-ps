@@ -44,32 +44,32 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var kurirsByRegion = {
-                "Payung Sekaki": [],
-                "Rumbai": [],
-                "Sukajadi": [],
-                "Senapelan": []
-            };
-
-            function updateKurirOptions(region) {
+       $(document).ready(function() {
+    function updateKurirOptions(region) {
+        $.ajax({
+            url: '/pengantaran/getKurirsByRegion/' + region,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
                 var kurirSelect = $('#nama_kurir');
                 kurirSelect.empty(); // Clear existing options
-
-                if (kurirsByRegion[region]) {
-                    kurirsByRegion[region].forEach(function(kurir) {
-                        kurirSelect.append(new Option(kurir.nama_lengkap, kurir.id));
-                    });
-                }
+                $.each(data, function(index, kurir) {
+                    kurirSelect.append(new Option(kurir.nama_lengkap, kurir.id));
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching kurirs:", error);
             }
+        });
+    }
 
-            $('#region').change(function() {
-                var selectedRegion = $(this).val();
-                updateKurirOptions(selectedRegion);
-            });
+    $('#region').change(function() {
+        var selectedRegion = $(this).val();
+        updateKurirOptions(selectedRegion);
+    });
 
-            // Initialize kurir options based on default selected region
-            updateKurirOptions($('#region').val());
+    // Initialize kurir options based on default selected region
+    updateKurirOptions($('#region').val());
 
             $('#add-detail').click(function() {
                 var jumlahPaket = $('#jumlah_paket').val();
