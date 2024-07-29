@@ -48,4 +48,8 @@ class KurirModel extends Model
     {
         return $this->delete($id);
     }
+      public function getKurirsByRegion($region)
+    {
+        return $this->where('region', $region)->findAll();
+    }
 }
