@@ -183,6 +183,6 @@
         });
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKuj5yJRaCw&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKzWwLg-JdU&libraries=places&callback=initMap">
     </script>
 <?= $this->endSection() ?>
