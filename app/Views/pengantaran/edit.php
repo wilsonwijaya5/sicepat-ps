@@ -60,27 +60,23 @@
                         <input type="date" class="form-control" id="tanggal_pengantaran<?= $index ?>" name="detail_pengantaran[<?= $index ?>][tanggal_pengantaran]" value="<?= old("detail_pengantaran.${index}.tanggal_pengantaran", esc($detail['tanggal_pengantaran'] ?? '')) ?>" required>
                     </div>
                     <div class="form-group">
-                    <label for="status<?= $index ?>">Status</label>
-                    <select class="form-control" id="status<?= $index ?>" name="status_display" disabled>
-                        <option value="Pending" <?= ($detail['status'] == 'Pending') ? 'selected' : '' ?>>Pending</option>
-                        <option value="Delivered" <?= ($detail['status'] == 'Delivered') ? 'selected' : '' ?>>Delivered</option>
-                    </select>
-                    <input type="hidden" name="detail_pengantaran[<?= $index ?>][status]" value="<?= $detail['status'] ?>">
-                </div>
-                <div class="form-group">
-
-                    <label for="map<?= $index ?>">Map</label>
-                    <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>
+                        <label for="status<?= $index ?>">Status</label>
+                        <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" required>
+                            <option value="Pending" <?= ($detail['status'] == 'Pending') ? 'selected' : '' ?>>Pending</option>
+                            <option value="Delivered" <?= ($detail['status'] == 'Delivered') ? 'selected' : '' ?>>Delivered</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="map<?= $index ?>">Map</label>
+                        <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>
                     </div>
                     <input type="hidden" id="latitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][latitude]" value="<?= old("detail_pengantaran.${index}.latitude", esc($detail['latitude'] ?? '')) ?>">
                     <input type="hidden" id="longitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][longitude]" value="<?= old("detail_pengantaran.${index}.longitude", esc($detail['longitude'] ?? '')) ?>">
-               
                 </div>
             </div>
         <?php endforeach; ?>
 
         <button type="submit" class="btn btn-primary">Update Pengantaran</button>
-        </div>
     </form>
 
     <script>
@@ -165,12 +161,12 @@
     // Load Google Maps API
     function loadGoogleMapsAPI() {
         var script = document.createElement('script');
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKzWwLg-JdU&libraries=places&callback=initMap';
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap';
         script.defer = true;
         script.async = true;
         document.head.appendChild(script);
     }
 
-    loadGoogleMapsAPI();
+    document.addEventListener('DOMContentLoaded', loadGoogleMapsAPI);
     </script>
 <?= $this->endSection() ?>
