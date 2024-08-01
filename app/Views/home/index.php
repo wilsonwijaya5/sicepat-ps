@@ -2,9 +2,8 @@
 
 <?= $this->section('content') ?>
     <section class="section">
-        <h1>Welcome to the Dashboard</h1>
-        <p>This is your admin dashboard. Feel free to explore!</p>
-
+        <h1>Welcome to the Dashboard SiCepat!</h1>
+    
         <div class="row">
             <div class="col-md-4">
                 <div class="card bg-info">
