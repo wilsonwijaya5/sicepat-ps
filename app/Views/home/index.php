@@ -14,14 +14,14 @@
                     </div>  
                 </div>
             </div>
-            <div class="col-md-4">
+<!--             <div class="col-md-4">
                 <div class="card bg-warning">
                     <div class="card-body text-white">
                         <h5 class="card-title">On Delivery</h5>
                         <p class="card-text"><?= $onDeliveryCount ?></p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-md-4">
                 <div class="card bg-success">
                     <div class="card-body text-white">
