@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-group">
                         <label for="status<?= $index ?>">Status</label>
-                        <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" required>
+                        <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" <?= ($detail['status'] == 'Delivered') ? 'disabled' : '' ?> required>
                             <option value="Pending" <?= ($detail['status'] == 'Pending') ? 'selected' : '' ?>>Pending</option>
                             <option value="Delivered" <?= ($detail['status'] == 'Delivered') ? 'selected' : '' ?>>Delivered</option>
                         </select>
