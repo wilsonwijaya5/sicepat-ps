@@ -15,20 +15,27 @@
 
   <form action="/pengantaran/update/<?= $pengantaran['id'] ?>" method="post">
     <?= csrf_field() ?>
-    <div class="form-group">
-      <label for="region">Region</label>
-      <input type="text" class="form-control" id="region" name="region" value="<?= old('region', esc($pengantaran['region'] ?? '')) ?>" required>
-    </div>
-    <div class="form-group">
-      <label for="nama_kurir">Nama Kurir</label>
-      <select class="form-control" id="nama_kurir" name="kurir_id" required>
-        <?php foreach ($kurirs as $kurir): ?>
-          <option value="<?= $kurir['id'] ?>" <?= ($pengantaran['kurir_id'] == $kurir['id']) ? 'selected' : '' ?>>
-            <?= esc($kurir['nama_lengkap']) ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
-    </div>
+ <div class="form-group">
+  <label for="region">Region</label>
+  <select class="form-control" id="region" name="region" required>
+    <option value="">Pilih Region</option>
+    <option value="Payung Sekaki" <?= ($pengantaran['region'] == 'Payung Sekaki') ? 'selected' : '' ?>>Payung Sekaki</option>
+    <option value="Rumbai" <?= ($pengantaran['region'] == 'Rumbai') ? 'selected' : '' ?>>Rumbai</option>
+    <option value="Sukajadi" <?= ($pengantaran['region'] == 'Sukajadi') ? 'selected' : '' ?>>Sukajadi</option>
+    <option value="Senapelan" <?= ($pengantaran['region'] == 'Senapelan') ? 'selected' : '' ?>>Senapelan</option>
+  </select>
+</div>
+   <div class="form-group">
+  <label for="nama_kurir">Nama Kurir</label>
+  <select class="form-control" id="nama_kurir" name="kurir_id" required>
+    <option value="">Pilih Kurir</option>
+    <?php foreach ($kurirs as $kurir): ?>
+      <option value="<?= $kurir['id'] ?>" <?= ($pengantaran['kurir_id'] == $kurir['id']) ? 'selected' : '' ?>>
+        <?= esc($kurir['nama_lengkap']) ?>
+      </option>
+    <?php endforeach; ?>
+  </select>
+</div>
     <div class="form-group">
       <label for="jumlah_paket">Jumlah Paket</label>
       <input type="number" class="form-control" id="jumlah_paket" name="jumlah_paket" value="<?= old('jumlah_paket', esc($pengantaran['jumlah_paket'] ?? '')) ?>" required>
@@ -75,8 +82,30 @@
 
     <button type="submit" class="btn btn-primary">Update Pengantaran</button>
   </form>
-
-  <script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#region').change(function() {
+    var region = $(this).val();
+    if(region) {
+      $.ajax({
+        url: '<?= base_url('pengantaran/getKurirsByRegion') ?>/' + region,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          $('#nama_kurir').empty();
+          $('#nama_kurir').append('<option value="">Pilih Kurir</option>');
+          $.each(data, function(key, value) {
+            $('#nama_kurir').append('<option value="'+ value.id +'">'+ value.nama_lengkap +'</option>');
+          });
+        }
+      });
+    } else {
+      $('#nama_kurir').empty();
+      $('#nama_kurir').append('<option value="">Pilih Kurir</option>');
+    }
+  });
+});
   function initMap() {
     <?php foreach ($detail_pengantaran as $index => $detail): ?>
       initializeMap<?= $index ?>();
