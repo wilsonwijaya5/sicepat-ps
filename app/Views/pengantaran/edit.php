@@ -161,7 +161,7 @@
     // Load Google Maps API
     function loadGoogleMapsAPI() {
         var script = document.createElement('script');
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap';
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC-S0PiFJUQ12lQUmPfg1QWPKzWwLg-JdU&libraries=places&callback=initMap';
         script.defer = true;
         script.async = true;
         document.head.appendChild(script);
@@ -170,3 +170,4 @@
     document.addEventListener('DOMContentLoaded', loadGoogleMapsAPI);
     </script>
 <?= $this->endSection() ?>
+
