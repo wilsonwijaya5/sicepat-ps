@@ -38,26 +38,28 @@
             <?php foreach($detailPengantaran as $index => $detail): ?>
                 <div class="form-group">
                     <h4>Detail Pengantaran Paket <?= $index + 1 ?></h4>  
+                    <input type="hidden" name="detail_pengantaran[<?= $index ?>][id]" value="<?= $detail['id'] ?>">
+                    
                     <label for="no_resi<?= $index ?>">Nomor Resi</label>
-                    <input type="text" class="form-control" id="no_resi<?= $index ?>" name="no_resi[]" value="<?= $detail['no_resi'] ?>" required>
+                    <input type="text" class="form-control" id="no_resi<?= $index ?>" name="detail_pengantaran[<?= $index ?>][no_resi]" value="<?= $detail['no_resi'] ?>" required>
 
                     <label for="tanggal_pengantaran<?= $index ?>">Tanggal Pengantaran</label>
-                    <input type="date" class="form-control" id="tanggal_pengantaran<?= $index ?>" name="tanggal_pengantaran[]" value="<?= $detail['tanggal_pengantaran'] ?>" required>
+                    <input type="date" class="form-control" id="tanggal_pengantaran<?= $index ?>" name="detail_pengantaran[<?= $index ?>][tanggal_pengantaran]" value="<?= $detail['tanggal_pengantaran'] ?>" required>
 
                     <label for="nama_penerima<?= $index ?>">Nama Penerima</label>
-                    <input type="text" class="form-control" id="nama_penerima<?= $index ?>" name="nama_penerima[]" value="<?= $detail['nama_penerima'] ?>" required>
+                    <input type="text" class="form-control" id="nama_penerima<?= $index ?>" name="detail_pengantaran[<?= $index ?>][nama_penerima]" value="<?= $detail['nama_penerima'] ?>" required>
 
                     <label for="nohp<?= $index ?>">Nomor HP Penerima</label>
-                    <input type="text" class="form-control" id="nohp<?= $index ?>" name="nohp[]" value="<?= $detail['nohp'] ?>" required>
+                    <input type="text" class="form-control" id="nohp<?= $index ?>" name="detail_pengantaran[<?= $index ?>][nohp]" value="<?= $detail['nohp'] ?>" required>
 
                     <label for="alamat_penerima<?= $index ?>">Alamat Penerima</label>
-                    <input type="text" class="form-control" id="alamat_penerima<?= $index ?>" name="alamat_penerima[]" value="<?= $detail['alamat_penerima'] ?>" required>
+                    <input type="text" class="form-control" id="alamat_penerima<?= $index ?>" name="detail_pengantaran[<?= $index ?>][alamat_penerima]" value="<?= $detail['alamat_penerima'] ?>" required>
 
                     <label for="status<?= $index ?>">Status</label>
-                    <input type="text" class="form-control" id="status<?= $index ?>" name="status[]" value="<?= $detail['status'] ?>" readonly>
+                    <input type="text" class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" value="<?= $detail['status'] ?>" readonly>
 
-                    <input type="hidden" id="latitude<?= $index ?>" name="latitude[]" value="<?= $detail['latitude'] ?>">
-                    <input type="hidden" id="longitude<?= $index ?>" name="longitude[]" value="<?= $detail['longitude'] ?>">
+                    <input type="hidden" id="latitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][latitude]" value="<?= $detail['latitude'] ?>">
+                    <input type="hidden" id="longitude<?= $index ?>" name="detail_pengantaran[<?= $index ?>][longitude]" value="<?= $detail['longitude'] ?>">
 
                     <label for="map<?= $index ?>">Pilih Lokasi pada Peta</label>
                     <div id="map<?= $index ?>" style="height: 300px;"></div>
@@ -98,81 +100,76 @@
 
             // Initialize kurir options based on current region
             updateKurirOptions($('#region').val());
-
-            // Initialize maps for each detail pengantaran
-            <?php foreach($detailPengantaran as $index => $detail): ?>
-                initMap('map<?= $index ?>', 'latitude<?= $index ?>', 'longitude<?= $index ?>', 'alamat_penerima<?= $index ?>');
-            <?php endforeach; ?>
         });
 
-        function initMap(mapId, latId, lngId, addressId) {
-            var map;
-            var marker;
-            var geocoder;
+        function initMap() {
+            <?php foreach($detailPengantaran as $index => $detail): ?>
+                initializeMap<?= $index ?>();
+            <?php endforeach; ?>
+        }
 
-            var lat = parseFloat(document.getElementById(latId).value);
-            var lng = parseFloat(document.getElementById(lngId).value);
-            var location = { lat: lat, lng: lng };
+        <?php foreach($detailPengantaran as $index => $detail): ?>
+        function initializeMap<?= $index ?>() {
+            var latitude = parseFloat(document.getElementById('latitude<?= $index ?>').value) || -6.2088;
+            var longitude = parseFloat(document.getElementById('longitude<?= $index ?>').value) || 106.8456;
+            var location = { lat: latitude, lng: longitude };
 
-            map = new google.maps.Map(document.getElementById(mapId), {
+            var map = new google.maps.Map(document.getElementById('map<?= $index ?>'), {
                 center: location,
                 zoom: 15
             });
 
-            marker = new google.maps.Marker({
+            var marker = new google.maps.Marker({
                 position: location,
                 map: map,
                 draggable: true
             });
 
-            google.maps.event.addListener(marker, 'dragend', function(event) {
-                document.getElementById(latId).value = event.latLng.lat();
-                document.getElementById(lngId).value = event.latLng.lng();
-                updateAddress(latId, lngId, addressId, event.latLng);
+            var geocoder = new google.maps.Geocoder();
+            var addressInput = document.getElementById('alamat_penerima<?= $index ?>');
+
+            google.maps.event.addListener(marker, 'dragend', function() {
+                var latLng = marker.getPosition();
+                updateLatLngInputs(latLng.lat(), latLng.lng(), <?= $index ?>);
+                geocodePosition(latLng, <?= $index ?>);
             });
 
-            google.maps.event.addListener(map, 'click', function(event) {
-                marker.setPosition(event.latLng);
-                document.getElementById(latId).value = event.latLng.lat();
-                document.getElementById(lngId).value = event.latLng.lng();
-                updateAddress(latId, lngId, addressId, event.latLng);
-            });
+            if (addressInput) {
+                addressInput.addEventListener('change', function() {
+                    geocodeAddress(geocoder, map, marker, <?= $index ?>);
+                });
+            }
+        }
+        <?php endforeach; ?>
 
-            geocoder = new google.maps.Geocoder();
-
-            // Add event listener for address input
-            var addressInput = document.getElementById(addressId);
-            addressInput.addEventListener('blur', function() {
-                geocodeAddress(addressInput.value, map, marker, latId, lngId);
-            });
+        function updateLatLngInputs(lat, lng, index) {
+            document.getElementById('latitude' + index).value = lat;
+            document.getElementById('longitude' + index).value = lng;
         }
 
-        function updateAddress(latId, lngId, addressId, latLng) {
+        function geocodePosition(pos, index) {
             var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'location': latLng }, function(results, status) {
-                if (status === 'OK') {
-                    if (results[0]) {
-                        document.getElementById(latId).value = latLng.lat();
-                        document.getElementById(lngId).value = latLng.lng();
-                        document.getElementById(addressId).value = results[0].formatted_address;
-                    } else {
-                        window.alert('Alamat tidak ditemukan');
-                    }
+            geocoder.geocode({
+                latLng: pos
+            }, function(responses, status) {
+                if (status === 'OK' && responses && responses.length > 0) {
+                    document.getElementById('alamat_penerima' + index).value = responses[0].formatted_address;
                 } else {
-                    window.alert('Geocoder failed due to: ' + status);
+                    console.error('Geocode was not successful for the following reason: ' + status);
+                    document.getElementById('alamat_penerima' + index).value = 'Cannot determine address at this location.';
                 }
             });
         }
 
-        function geocodeAddress(address, map, marker, latId, lngId) {
-            var geocoder = new google.maps.Geocoder();
+        function geocodeAddress(geocoder, resultsMap, resultsMarker, index) {
+            var address = document.getElementById('alamat_penerima' + index).value;
             geocoder.geocode({'address': address}, function(results, status) {
                 if (status === 'OK') {
-                    map.setCenter(results[0].geometry.location);
-                    marker.setPosition(results[0].geometry.location);
-                    document.getElementById(latId).value = results[0].geometry.location.lat();
-                    document.getElementById(lngId).value = results[0].geometry.location.lng();
+                    resultsMap.setCenter(results[0].geometry.location);
+                    resultsMarker.setPosition(results[0].geometry.location);
+                    updateLatLngInputs(results[0].geometry.location.lat(), results[0].geometry.location.lng(), index);
                 } else {
+                    console.error('Geocode was not successful for the following reason: ' + status);
                     alert('Geocode was not successful for the following reason: ' + status);
                 }
             });
