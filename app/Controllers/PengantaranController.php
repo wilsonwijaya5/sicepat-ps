@@ -158,7 +158,8 @@ class PengantaranController extends Controller
             'alamat_penerima' => $detail['alamat_penerima'],
             'tanggal_pengantaran' => $detail['tanggal_pengantaran'],
             'no_resi' => $detail['no_resi'],
-            'status' => $detail['status'],
+            // Hapus baris berikut untuk mencegah perubahan status
+            // 'status' => $detail['status'],
             'latitude' => $detail['latitude'],
             'longitude' => $detail['longitude'],
         ];
