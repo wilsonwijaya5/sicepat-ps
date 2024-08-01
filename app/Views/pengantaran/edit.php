@@ -59,13 +59,10 @@
             <label for="tanggal_pengantaran<?= $index ?>">Tanggal Pengantaran</label>
             <input type="date" class="form-control" id="tanggal_pengantaran<?= $index ?>" name="detail_pengantaran[<?= $index ?>][tanggal_pengantaran]" value="<?= old("detail_pengantaran.${index}.tanggal_pengantaran", esc($detail['tanggal_pengantaran'] ?? '')) ?>" required>
           </div>
-          <div class="form-group">
-            <label for="status<?= $index ?>">Status</label>
-            <select class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" <?= ($detail['status'] == 'Delivered') ? 'disabled' : '' ?> required>
-              <option value="Pending" <?= ($detail['status'] == 'Pending') ? 'selected' : '' ?>>Pending</option>
-              <option value="Delivered" <?= ($detail['status'] == 'Delivered') ? 'selected' : '' ?>>Delivered</option>
-            </select>
-          </div>
+         <div class="form-group">
+  <label for="status<?= $index ?>">Status</label>
+  <input type="text" class="form-control" id="status<?= $index ?>" name="detail_pengantaran[<?= $index ?>][status]" value="<?= esc($detail['status']) ?>" readonly>
+</div>
           <div class="form-group">
             <label for="map<?= $index ?>">Map</label>
             <div id="map<?= $index ?>" style="height: 300px; margin-bottom: 10px;"></div>
