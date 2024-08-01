@@ -11,67 +11,82 @@ class RuteAPI extends ResourceController
     protected $format = 'json';
 
     public function optimizeRoute($kurirId)
-    {
-        $startLat = $this->request->getGet('start_lat');
-        $startLon = $this->request->getGet('start_lon');
+{
+    $startLat = $this->request->getGet('start_lat');
+    $startLon = $this->request->getGet('start_lon');
 
-        if (!$startLat || !$startLon) {
-            return $this->fail('Start latitude and longitude are required', 400);
-        }
-
-        $pengantaranModel = new PengantaranModel();
-        $detailPengantaranModel = new DetailPengantaranModel();
-
-        // Ambil data pengantaran dengan status pending
-        $pengantaran = $detailPengantaranModel->getPendingDetailsByKurir($kurirId);
-
-        if (empty($pengantaran)) {
-            return $this->failNotFound('No pending pengantaran found for kurir ID: ' . $kurirId);
-        }
-
-        // Tambahkan posisi awal kurir ke daftar koordinat
-        $coordinates = [
-            [
-                'id' => 'start',
-                'lat' => $startLat,
-                'lon' => $startLon,
-                'nama_penerima' => 'Kurir Start Position',
-                'alamat_penerima' => 'Current Location'
-            ]
-        ];
-
-        // Tambahkan koordinat dari detail pengantaran dengan status pending
-        foreach ($pengantaran as $item) {
-            $coordinates[] = [
-                'id' => $item['id'],
-                'lat' => $item['latitude'],
-                'lon' => $item['longitude'],
-                'nama_penerima' => $item['nama_penerima'],
-                'alamat_penerima' => $item['alamat_penerima']
-            ];
-        }
-
-        // Hitung jarak menggunakan Formula Haversine
-        $distances = $this->calculateDistances($coordinates);
-
-        // Terapkan algoritma Dijkstra untuk menentukan rute optimal
-        $optimalRoute = $this->dijkstra($distances);
-
-        // Susun hasil rute optimal
-        $result = [];
-        foreach ($optimalRoute as $index) {
-            $result[] = $coordinates[$index];
-        }
-
-        // Hitung total jarak
-        $totalDistance = $this->calculateTotalDistance($optimalRoute, $distances);
-
-        return $this->respond([
-            'optimal_route' => $result,
-            'total_distance' => $totalDistance
-        ]);
+    if (!$startLat || !$startLon) {
+        return $this->fail('Start latitude and longitude are required', 400);
     }
 
+    $pengantaranModel = new PengantaranModel();
+    $detailPengantaranModel = new DetailPengantaranModel();
+
+    // Ambil data pengantaran dengan status pending
+    $pengantaran = $detailPengantaranModel->getPendingDetailsByKurir($kurirId);
+
+    if (empty($pengantaran)) {
+        return $this->failNotFound('No pending pengantaran found for kurir ID: ' . $kurirId);
+    }
+
+    // Tambahkan posisi awal kurir ke daftar koordinat
+    $coordinates = [
+        [
+            'id' => 'start',
+            'lat' => $startLat,
+            'lon' => $startLon,
+            'nama_penerima' => 'Kurir Start Position',
+            'alamat_penerima' => 'Current Location'
+        ]
+    ];
+
+    // Tambahkan koordinat dari detail pengantaran dengan status pending
+    foreach ($pengantaran as $item) {
+        $coordinates[] = [
+            'id' => $item['id'],
+            'lat' => $item['latitude'],
+            'lon' => $item['longitude'],
+            'nama_penerima' => $item['nama_penerima'],
+            'alamat_penerima' => $item['alamat_penerima']
+        ];
+    }
+
+    // Hitung jarak menggunakan Formula Haversine
+    $distances = $this->calculateDistances($coordinates);
+
+    // Urutkan lokasi berdasarkan jarak dari posisi awal
+    $sortedLocations = $this->sortLocationsByDistance($distances[0]);
+
+    // Terapkan algoritma Dijkstra untuk menentukan rute optimal
+    $optimalRoute = $this->dijkstra($distances);
+
+    // Susun hasil rute optimal
+    $optimalResult = [];
+    foreach ($optimalRoute as $index) {
+        $optimalResult[] = $coordinates[$index];
+    }
+
+    // Susun hasil lokasi terdekat
+    $nearestResult = [];
+    foreach ($sortedLocations as $index) {
+        $nearestResult[] = $coordinates[$index];
+    }
+
+    // Hitung total jarak untuk rute optimal
+    $totalDistance = $this->calculateTotalDistance($optimalRoute, $distances);
+
+    return $this->respond([
+        'nearest_locations' => $nearestResult,
+        'optimal_route' => $optimalResult,
+        'total_distance' => $totalDistance
+    ]);
+}
+
+private function sortLocationsByDistance($distancesFromStart)
+{
+    asort($distancesFromStart);
+    return array_keys($distancesFromStart);
+}
     private function calculateDistances($coordinates)
     {
         $distances = [];
