@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
     <section class="section">
-        <h1>Welcome to the Dashboard SiCepat!</h1>
+        <h1>SiCepat | Layanan Kirim Paket Ekspress No.1 di Indonesia</h1>
     
         <div class="row">
             <div class="col-md-4">
