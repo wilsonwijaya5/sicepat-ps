@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sicepat</title>
+    <title>SiCepat | Layanan Kirim Paket Ekspress No.1 di Indonesia</title>
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.css') ?>">
     
     <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
