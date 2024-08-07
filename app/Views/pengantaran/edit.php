@@ -45,7 +45,10 @@
     <?php foreach ($detail_pengantaran as $index => $detail): ?>
       <div class="card mb-3">
         <div class="card-body">
-          <input type="hidden" name="detail_pengantaran[<?= $index ?>][id]" value="<?= $detail['id'] ?>">
+      
+          <div class="form-group">
+             <input name="detail_pengantaran[<?= $index ?>][id]" value="<?= $detail['id'] ?>">
+          </div>
           <div class="form-group">
             <label for="no_resi<?= $index ?>">No. Resi</label>
             <input type="text" class="form-control" id="no_resi<?= $index ?>" name="detail_pengantaran[<?= $index ?>][no_resi]" value="<?= old("detail_pengantaran.${index}.no_resi", esc($detail['no_resi'] ?? '')) ?>" required>
