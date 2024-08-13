@@ -37,10 +37,6 @@
             </div>
         <?php endif; ?>
     </div>
-    <div class="form-group">
-        <label for="coordinate">Coordinate</label>
-        <input type="text" class="form-control" id="coordinate" name="coordinate" value="<?= esc($bukti['coordinate'] ?? '') ?>" placeholder="Enter coordinates (e.g., latitude,longitude)">
-    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <?= $this->endSection() ?>
