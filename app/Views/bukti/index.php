@@ -16,7 +16,6 @@
             <th>Tanggal Terima</th>
             <th>Waktu</th>
             <th>Keterangan</th>
-            <th>Kordinat</th>
             <th>Gambar</th>
             
             <th>Actions</th>
@@ -29,7 +28,6 @@
                 <td><?= $row['tanggal_terima'] ?></td>
                 <td><?= $row['waktu'] ?></td>
                 <td><?= $row['keterangan'] ?></td>
-                <td><?= $row['coordinate'] ?></td>
                 <td>
                     <!-- Display image from Cloudinary -->
                     <img src="https://res.cloudinary.com/huajcm9nv/image/upload/<?= $row['gambar'] ?>" alt="Gambar Bukti" style="max-width: 150px;">
