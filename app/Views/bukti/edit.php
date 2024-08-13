@@ -1,8 +1,6 @@
 <?= $this->extend('layouts/main') ?>
-
 <?= $this->section('content') ?>
 <h1>Edit Bukti</h1>
-
 <?php if (session()->getFlashdata('errors')): ?>
     <div class="alert alert-danger">
         <ul>
@@ -12,7 +10,6 @@
         </ul>
     </div>
 <?php endif; ?>
-
 <form action="/bukti/update/<?= $bukti['id'] ?>" method="post" enctype="multipart/form-data">
     <?= csrf_field() ?>
     <div class="form-group">
@@ -29,7 +26,6 @@
     </div>
     <div class="form-group">
         <label for="gambar">Gambar</label>
-        <!-- <input type="file" class="form-control-file" id="gambar" name="gambar" accept="image/*"> -->
         <?php if (!empty($bukti['gambar'])): ?>
             <?php
             // Construct the Cloudinary URL
@@ -37,12 +33,18 @@
             ?>
             <input type="hidden" name="gambar_lama" value="<?= esc($bukti['gambar']) ?>">
             <div class="mt-2">
-                <!-- <p>Image URL: <?= esc($imageUrl) ?></p> -->
                 <img src="<?= esc($imageUrl) ?>" alt="Current Gambar" style="max-width: 200px;">
             </div>
         <?php endif; ?>
     </div>
+    <div class="form-group">
+        <label for="timestamp">Timestamp</label>
+        <input type="datetime-local" class="form-control" id="timestamp" name="timestamp" value="<?= esc(date('Y-m-d\TH:i', strtotime($bukti['timestamp'] ?? ''))) ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="coordinate">Coordinate</label>
+        <input type="text" class="form-control" id="coordinate" name="coordinate" value="<?= esc($bukti['coordinate'] ?? '') ?>" placeholder="Enter coordinates (e.g., latitude,longitude)">
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
 <?= $this->endSection() ?>
