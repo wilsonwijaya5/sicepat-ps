@@ -38,10 +38,6 @@
         <?php endif; ?>
     </div>
     <div class="form-group">
-        <label for="timestamp">Timestamp</label>
-        <input type="datetime-local" class="form-control" id="timestamp" name="timestamp" value="<?= esc(date('Y-m-d\TH:i', strtotime($bukti['timestamp'] ?? ''))) ?>" required>
-    </div>
-    <div class="form-group">
         <label for="coordinate">Coordinate</label>
         <input type="text" class="form-control" id="coordinate" name="coordinate" value="<?= esc($bukti['coordinate'] ?? '') ?>" placeholder="Enter coordinates (e.g., latitude,longitude)">
     </div>
