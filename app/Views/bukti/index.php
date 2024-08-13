@@ -16,7 +16,6 @@
             <th>Tanggal Terima</th>
             <th>Waktu</th>
             <th>Keterangan</th>
-            <th>Timestamp</th>
             <th>Kordinat</th>
             <th>Gambar</th>
             
@@ -30,7 +29,6 @@
                 <td><?= $row['tanggal_terima'] ?></td>
                 <td><?= $row['waktu'] ?></td>
                 <td><?= $row['keterangan'] ?></td>
-                <td><?= $row['timestamp'] ?></td>
                 <td><?= $row['coordinate'] ?></td>
                 <td>
                     <!-- Display image from Cloudinary -->
