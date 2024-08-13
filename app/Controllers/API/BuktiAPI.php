@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Controllers\API;
-
 use App\Models\BuktiModel;
 use CodeIgniter\RESTful\ResourceController;
 use Cloudinary\Cloudinary;
@@ -16,7 +14,6 @@ class BuktiAPI extends ResourceController
     {
         try {
             $img = $this->request->getFile('gambar');
-
             if (!$img->isValid()) {
                 return $this->fail($img->getErrorString());
             }
@@ -49,6 +46,8 @@ class BuktiAPI extends ResourceController
                 'waktu' => $this->request->getPost('waktu'),
                 'keterangan' => $this->request->getPost('keterangan'),
                 'gambar' => $filename,
+                'timestamp' => date('Y-m-d H:i:s'),  // Add timestamp
+                'coordinate' => $this->request->getPost('coordinate'),  // Add coordinate
             ];
 
             // Disable validation temporarily
